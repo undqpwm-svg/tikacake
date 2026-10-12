@@ -76,7 +76,7 @@ main{flex:1;padding:6px 16px 120px;display:flex;flex-direction:column;gap:26px}
 .eyebrow{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
 .hero h2{font-family:var(--display);font-size:22px;line-height:1.12;margin:8px 0 8px;font-weight:700;color:var(--plum);text-wrap:balance}
 .hero p{margin:0 0 14px;font-size:13px;color:var(--muted)}
-.hero .art{width:118%;margin-left:-10%;aspect-ratio:200/170;max-width:none}
+.hero .art{width:100%;display:block;aspect-ratio:200/170}
 .hero .cta{display:inline-flex;align-items:center;gap:8px;background:var(--plum);color:var(--bg);font-weight:700;font-size:14px;padding:11px 16px;border-radius:14px}
 
 /* Акции */
@@ -248,6 +248,11 @@ main{flex:1;padding:6px 16px 120px;display:flex;flex-direction:column;gap:26px}
 .perks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .perk{display:flex;flex-direction:column;gap:2px;font-size:11.5px;color:var(--muted);padding:12px 10px;border-radius:18px;background:var(--card);box-shadow:var(--shadow-s)}
 .perk b{font-family:var(--display);font-size:14px;font-weight:600;color:var(--fg)}
+.cat i,.line .th,.hv{position:relative;overflow:hidden}
+.photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;max-width:none}
+.hv{display:block;border-radius:22px}
+.tag{z-index:1}.sheet .close{z-index:2}.sheet .grab{z-index:2}
+.sheet .ph{overflow:hidden}
 .foot{font-size:12px;color:var(--muted);text-align:center;margin:0}
 .found{font-size:13px;color:var(--muted)}
 .stepper{display:flex;gap:6px}
@@ -539,6 +544,36 @@ function art(p,cls="",big=false){
   return `<svg class="${cls}" viewBox="0 0 200 170" aria-hidden="true">${defs(u)}${inner}</svg>`;
 }
 
+// ===== Фото товаров с tikacake.kz (WooCommerce Store API, грузится в браузере посетителя) =====
+let PHOTO=store.get("photos",{});
+function vis(p,cls="",big=false){ // иллюстрация + фото поверх; если фото не загрузится — остаётся иллюстрация
+  const f=PHOTO[p.id];
+  return art(p,cls,big)+(f?`<img class="photo" src="${esc(big?f.big:f.thumb)}" alt="${esc(p.n)}" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">`:"");
+}
+function decode(s){const t=document.createElement("textarea");t.innerHTML=s;return t.value}
+const nkey=s=>decode(s).toLowerCase().replace(/ё/g,"е").replace(/[^a-zа-я0-9]+/g," ").split(" ")
+  .filter(w=>w&&!["торт","тортик","пирог","кг","шт"].includes(w)&&!/^\d+$/.test(w)).join("");
+async function loadPhotos(){
+  const base="https://tikacake.kz/wp-json/wc/store/v1/products?per_page=100&page=";
+  const items=[];
+  for(let page=1;page<=3;page++){
+    const ctl=new AbortController(),tm=setTimeout(()=>ctl.abort(),8000);
+    try{const r=await fetch(base+page,{signal:ctl.signal});clearTimeout(tm);if(!r.ok)break;
+      const j=await r.json();if(!Array.isArray(j)||!j.length)break;items.push(...j);if(j.length<100)break}
+    catch(e){clearTimeout(tm);break}
+  }
+  if(!items.length)return;
+  const site=items.filter(x=>x.images&&x.images[0]).map(x=>({k:nkey(x.name),img:x.images[0]}));
+  const found={};
+  P.forEach(p=>{const k=nkey(p.n);if(!k)return;
+    // точное совпадение, иначе самое короткое название, содержащее наше
+    const m=site.find(x=>x.k===k)||site.filter(x=>x.k.includes(k)).sort((a,b)=>a.k.length-b.k.length)[0];
+    if(m)found[p.id]={thumb:m.img.thumbnail||m.img.src,big:m.img.src}});
+  if(!Object.keys(found).length)return;
+  PHOTO=found;store.set("photos",found);
+  const y=window.scrollY;renderView();if(sheet)drawSheet();window.scrollTo(0,y);
+}
+
 // ===== Иконки =====
 const I={
  home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1Z"/></svg>',
@@ -591,7 +626,7 @@ function renderNav(){
 function card(p){
   const inCart=S.cart.filter(l=>l.id===p.id).reduce((s,l)=>s+l.q,0);
   return `<div class="card" role="button" tabindex="0" data-open="${p.id}" aria-label="${p.n}">
-    <div class="pic t-${p.t}">${p.tag?`<span class="tag">${p.tag}</span>`:""}${art(p)}</div>
+    <div class="pic t-${p.t}">${p.tag?`<span class="tag">${p.tag}</span>`:""}${vis(p)}</div>
     <div class="nm">${p.n}</div><div class="wt">${p.v.map(x=>x[0]).join(" · ")}</div>
     <div class="row"><span class="price">${p.v.length>1?'<span class="from">от </span>':""}${fmt(p.v[0][1])}</span>
     <button class="add ${inCart?"in":""}" data-quick="${p.id}" aria-label="Добавить ${p.n}">${inCart?"× "+inCart:I.plus}</button></div></div>`;
@@ -609,14 +644,14 @@ function viewHome(){
   <button class="hero t-${star.t}" data-open="15">
     <div><div class="eyebrow">Торт недели</div><h2>${star.n}</h2><p>${star.d}</p>
       <span class="cta">от ${fmt(star.v[0][1])} ${I.arrow}</span></div>
-    ${art(star,"art",true)}
+    <span class="hv">${vis(star,"art",true)}</span>
   </button>
   <div class="promos">
     <button class="promo" data-go-cat="cakes"><b>−10 %</b><span>на торты в день рождения, 3 дня до и после</span></button>
     <button class="promo" data-tab="bonus"><b>до 7 %</b><span>накопительная скидка: 3 → 5 → 7 %</span></button>
   </div>
   <section class="sec"><div class="sec-h"><h2>Что хочется?</h2></div>
-    <div class="cats">${CATS.map(c=>{const p=byId(CAT_ART[c.id]);return `<button class="cat" data-go-cat="${c.id}"><i class="t-${p.t}">${art(p)}</i>${c.n}</button>`}).join("")}</div></section>
+    <div class="cats">${CATS.map(c=>{const p=byId(CAT_ART[c.id]);return `<button class="cat" data-go-cat="${c.id}"><i class="t-${p.t}">${vis(p)}</i>${c.n}</button>`}).join("")}</div></section>
   <section class="sec"><div class="sec-h"><h2>Любимое у гостей</h2><button data-go-cat="cakes">Все торты</button></div>
     <div class="grid">${hits.slice(0,6).map(card).join("")}</div></section>
   <div class="perks"><div class="perk"><b>2 часа</b>и торт готов к самовывозу</div><div class="perk"><b>8 точек</b>по всей Астане</div><div class="perk"><b>Kaspi</b>оплата в приложении</div></div>
@@ -635,7 +670,7 @@ function viewCart(){
   if(!S.cart.length)return `<div class="empty"><div class="pic t-lilac">${art(byId(6))}</div><h2>Корзина пока пуста</h2><p>Загляните в каталог: торты, пироги и выпечка.</p><button class="btn" style="flex:none;width:100%" data-tab="catalog">Перейти в каталог</button></div>`;
   const t=totals();
   return `<div class="lines">${S.cart.map((l,i)=>{const p=byId(l.id),vv=p.v[l.vi];return `
-    <div class="line"><div class="th t-${p.t}">${art(p)}</div>
+    <div class="line"><div class="th t-${p.t}">${vis(p)}</div>
       <div><div class="nm">${p.n}</div><div class="var">${vv[0]} · ${fmt(vv[1])}</div>
       <div class="qty"><button data-q="${i}" data-d="-1" aria-label="Меньше">−</button><span>${l.q}</span><button data-q="${i}" data-d="1" aria-label="Больше">+</button></div></div>
       <b class="price">${fmt(vv[1]*l.q)}</b></div>`}).join("")}</div>
@@ -719,7 +754,7 @@ function drawSheet(){
   const p=byId(sheet.id),vv=p.v[sheet.vi];
   document.body.style.overflow="hidden";
   L.innerHTML=`<div class="sheet-bg" data-close><div class="sheet" role="dialog" aria-modal="true" aria-label="${p.n}">
-   <div class="ph t-${p.t}"><span class="grab"></span>${art(p,"",p.a.shape==="cake")}<button class="iconbtn close" data-close aria-label="Закрыть">${I.x}</button></div>
+   <div class="ph t-${p.t}"><span class="grab"></span>${vis(p,"",p.a.shape==="cake")}<button class="iconbtn close" data-close aria-label="Закрыть">${I.x}</button></div>
    <div class="in">${p.tag?`<div class="eyebrow">${p.tag}</div>`:""}<h2>${p.n}</h2><p>${p.d}</p>
     ${p.v.length>1?`<div class="label">Вес / вариант</div><div class="opts">${p.v.map((x,i)=>`<button class="opt" data-vi="${i}" aria-pressed="${sheet.vi===i}"><span>${x[0]}</span><b>${fmt(x[1])}</b></button>`).join("")}</div>`:""}
     <div class="facts"><div class="fact">${p.v.length>1?"Выбрано":"Вариант"}<b>${vv[0]}</b></div><div class="fact">Готовность<b>${p.c==="cakes"?"через 2 ч":"сегодня"}</b></div><div class="fact">Хранение<b>${p.c==="semi"?"−18 °C":"+2…+6 °C"}</b></div></div>
@@ -787,6 +822,7 @@ document.addEventListener("input",e=>{
 });
 document.addEventListener("change",e=>{if(e.target.dataset.bday!==undefined){S.co.bday=e.target.checked;renderView()}});
 render();
+loadPhotos();
 </script>
 </body>
 </html>
