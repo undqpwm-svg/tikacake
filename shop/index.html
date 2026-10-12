@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#8b55c8">
+<meta name="theme-color" content="#ffffff">
+<meta name="color-scheme" content="light only">
 <meta name="robots" content="noindex">
 <style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>
 <title>Tika Cake</title>
@@ -13,26 +14,14 @@
 <style>
 /* Витрина кондитерской: товар на пастельной «подложке», много воздуха, плавающее меню. Сиреневая гамма tikacake.kz. */
 :root{
-  --bg:#fcfaff; --card:#ffffff; --soft:#f4eefb; --line:#ebe3f5;
-  --fg:#261d30; --muted:#857a91; --accent:#8b55c8; --accent-ink:#ffffff; --accent-soft:#f0e6fb; --plum:#4f2878;
+  --bg:#ffffff; --card:#ffffff; --soft:#f7f2fd; --line:#efe7f8; color-scheme:light;
+  --fg:#3a2f45; --muted:#968aa3; --accent:#a06ad8; --accent-ink:#ffffff; --accent-soft:#f5edfd; --plum:#7d4bb5;
   --ok:#2b8a5a; --warn:#d0532e; --wa:#25d366;
-  --t-lilac:#efe6fb; --t-pink:#fce9ef; --t-peach:#fdeedf; --t-mint:#ecf3e1; --t-cream:#f9f1e2; --t-choc:#f3e8e1;
-  --glass:rgba(255,255,255,.86); --shadow:0 10px 30px -10px rgba(79,40,120,.28); --shadow-s:0 2px 10px rgba(79,40,120,.08);
+  --t-lilac:#f5effd; --t-pink:#fdf0f4; --t-peach:#fef4ea; --t-mint:#f2f7ea; --t-cream:#fcf7ec; --t-choc:#f8f1ec;
+  --glass:rgba(255,255,255,.86); --shadow:0 10px 30px -12px rgba(125,75,181,.25); --shadow-s:0 2px 12px rgba(125,75,181,.07);
   --display:"Unbounded","Montserrat",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
   --font:"Montserrat",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#141018; --card:#1d1723; --soft:#251d2e; --line:#33293e;
-  --fg:#f3eef8; --muted:#a99db6; --accent:#b98ff0; --accent-ink:#1a1222; --accent-soft:#2f2440; --plum:#dcc4fa;
-  --ok:#5cc28c; --warn:#ff8a5c;
-  --t-lilac:#2a2138; --t-pink:#33212b; --t-peach:#33271f; --t-mint:#232c1f; --t-cream:#2f2a20; --t-choc:#2e2420;
-  --glass:rgba(29,23,35,.86); --shadow:0 10px 30px -10px rgba(0,0,0,.6); --shadow-s:0 2px 10px rgba(0,0,0,.3); color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#141018; --card:#1d1723; --soft:#251d2e; --line:#33293e;
-  --fg:#f3eef8; --muted:#a99db6; --accent:#b98ff0; --accent-ink:#1a1222; --accent-soft:#2f2440; --plum:#dcc4fa;
-  --ok:#5cc28c; --warn:#ff8a5c;
-  --t-lilac:#2a2138; --t-pink:#33212b; --t-peach:#33271f; --t-mint:#232c1f; --t-cream:#2f2a20; --t-choc:#2e2420;
-  --glass:rgba(29,23,35,.86); --shadow:0 10px 30px -10px rgba(0,0,0,.6); --shadow-s:0 2px 10px rgba(0,0,0,.3); color-scheme:dark}
 *{box-sizing:border-box}
 html,body{height:100%}
 body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:15px;line-height:1.45;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
@@ -77,7 +66,7 @@ main{flex:1;padding:6px 16px 120px;display:flex;flex-direction:column;gap:26px}
 .hero h2{font-family:var(--display);font-size:22px;line-height:1.12;margin:8px 0 8px;font-weight:700;color:var(--plum);text-wrap:balance}
 .hero p{margin:0 0 14px;font-size:13px;color:var(--muted)}
 .hero .art{width:100%;display:block;aspect-ratio:200/170}
-.hero .cta{display:inline-flex;align-items:center;gap:8px;background:var(--plum);color:var(--bg);font-weight:700;font-size:14px;padding:11px 16px;border-radius:14px}
+.hero .cta{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:14px;padding:11px 16px;border-radius:14px}
 
 /* Акции */
 .promos{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -112,7 +101,7 @@ main{flex:1;padding:6px 16px 120px;display:flex;flex-direction:column;gap:26px}
 .chips::-webkit-scrollbar{display:none}
 .chip{flex:none;padding:9px 14px;border-radius:99px;background:var(--card);box-shadow:var(--shadow-s);font-weight:600;font-size:13px;white-space:nowrap}
 .chip small{color:var(--muted);font-weight:500;margin-left:5px}
-.chip[aria-pressed="true"]{background:var(--plum);color:var(--bg)}
+.chip[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
 .chip[aria-pressed="true"] small{color:inherit;opacity:.7}
 
 /* Плавающее меню */
@@ -128,7 +117,7 @@ main{flex:1;padding:6px 16px 120px;display:flex;flex-direction:column;gap:26px}
 .wa svg{width:24px;height:24px}
 
 /* Шторка товара */
-.sheet-bg{position:fixed;inset:0;background:rgba(25,12,40,.5);z-index:40;display:flex;align-items:flex-end;justify-content:center}
+.sheet-bg{position:fixed;inset:0;background:rgba(90,60,120,.28);z-index:40;display:flex;align-items:flex-end;justify-content:center}
 .sheet{background:var(--bg);width:100%;max-width:480px;max-height:94%;border-radius:30px 30px 0 0;overflow-y:auto;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));animation:up .26s cubic-bezier(.2,.8,.2,1)}
 @keyframes up{from{transform:translateY(60px);opacity:.5}to{transform:none;opacity:1}}
 @media (prefers-reduced-motion:reduce){.sheet{animation:none}}
@@ -206,7 +195,7 @@ main{flex:1;padding:6px 16px 120px;display:flex;flex-direction:column;gap:26px}
 .check input{width:20px;height:20px;accent-color:var(--accent);flex:none;margin-top:1px}
 
 /* Бонусы */
-.loyal{border-radius:26px;padding:20px;color:#fff;background:radial-gradient(120% 140% at 100% 0%,#b48ae6 0%,#7a45b8 45%,#4a2373 100%);display:flex;flex-direction:column;gap:14px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.loyal{border-radius:26px;padding:20px;color:#fff;background:radial-gradient(120% 140% at 100% 0%,#d9bff5 0%,#b386e6 45%,#9561d1 100%);display:flex;flex-direction:column;gap:14px;box-shadow:var(--shadow);position:relative;overflow:hidden}
 .loyal::after{content:"TIKA CAKE";position:absolute;right:-6px;bottom:-12px;font-family:var(--display);font-weight:700;font-size:38px;opacity:.09;letter-spacing:.02em;white-space:nowrap}
 .loyal .lv{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
 .loyal .pct{font-family:var(--display);font-size:44px;font-weight:700;line-height:1}
@@ -244,7 +233,7 @@ main{flex:1;padding:6px 16px 120px;display:flex;flex-direction:column;gap:26px}
 .done .ok svg{width:44px;height:44px}
 .done h2{font-family:var(--display);margin:0;font-size:20px;font-weight:700}
 .done p{margin:0;color:var(--muted);max-width:34ch}
-.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(160px + env(safe-area-inset-bottom,0px));z-index:60;background:var(--fg);color:var(--bg);padding:11px 16px;border-radius:14px;font-size:14px;font-weight:600;box-shadow:var(--shadow);max-width:calc(100% - 32px)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(160px + env(safe-area-inset-bottom,0px));z-index:60;background:var(--plum);color:var(--bg);padding:11px 16px;border-radius:14px;font-size:14px;font-weight:600;box-shadow:var(--shadow);max-width:calc(100% - 32px)}
 .perks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .perk{display:flex;flex-direction:column;gap:2px;font-size:11.5px;color:var(--muted);padding:12px 10px;border-radius:18px;background:var(--card);box-shadow:var(--shadow-s)}
 .perk b{font-family:var(--display);font-size:14px;font-weight:600;color:var(--fg)}
@@ -716,7 +705,7 @@ function viewDone(){
 function viewBonus(){
   const lv=level(USER.spent),next=LEVELS.find(l=>l.from>USER.spent);
   const pct=next?Math.round(USER.spent/next.from*100):100;
-  const hist=[...S.orders.map(o=>[o.date,`Заказ № ${o.no}`,o.total]),["12.09","Торт «Сникерс», 1,5 кг",12000],["28.08","Наполеон, баурсаки",9300],["03.08","Фисташка-малина, 1,5 кг",14000],["15.07","Банофи-пай, вафли",6700]];
+  const hist=[...S.orders.map(o=>[o.date,`Заказ № ${o.no}`,o.total]),["12.09","Торт «Сникерс», 22 см",12000],["28.08","Наполеон, баурсаки",9300],["03.08","Фисташка-малина, 22 см",14000],["15.07","Пирожное Баннофи, вафли весовые",6700]];
   return `
   <div class="loyal"><div class="lv"><div><small>${USER.name}, ваша скидка</small><div class="pct">${lv.p} %</div></div><small>Карта № 0417 2290</small></div>
    <div class="bar"><i style="width:${pct}%"></i></div>
