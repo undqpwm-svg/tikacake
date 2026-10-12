@@ -269,9 +269,9 @@ main > .btn{flex:none}
 .sv .bg .photo{object-fit:cover}
 .sv .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45) 0%,rgba(0,0,0,0) 22%,rgba(0,0,0,0) 45%,rgba(20,8,30,.85) 100%)}
 .sv .bars{position:absolute;top:calc(10px + env(safe-area-inset-top,0px));left:12px;right:12px;display:flex;gap:4px;z-index:2}
-.sv .bars i{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.35);overflow:hidden}
+.sv .bars i{flex:1;height:2.5px;border-radius:2px;background:rgba(255,255,255,.35);overflow:hidden;display:block;padding:0}
 .sv .bars i b{display:block;height:100%;width:0;background:#fff}
-.sv .bars i.done b{width:100%}
+.sv .bars i.past b{width:100%}
 .sv .bars i.cur b{animation:fill 5s linear forwards}
 @keyframes fill{to{width:100%}}
 .sv .hd{position:absolute;top:calc(22px + env(safe-area-inset-top,0px));left:14px;right:10px;display:flex;align-items:center;gap:10px;color:#fff;z-index:2;font-size:13px;font-weight:600}
@@ -978,7 +978,7 @@ function drawStory(){
   const s=STORIES[story.i],p=byName(s.p);document.body.style.overflow="hidden";
   $("#sv").innerHTML=`<div class="sv" role="dialog" aria-label="${esc(s.h)}"><div class="fr">
     <div class="bg t-${p.t}">${vis(p,"",true)}</div><div class="shade"></div>
-    <div class="bars">${STORIES.map((_,j)=>`<i class="${j<story.i?"done":j===story.i?"cur":""}"><b></b></i>`).join("")}</div>
+    <div class="bars">${STORIES.map((_,j)=>`<i class="${j<story.i?"past":j===story.i?"cur":""}"><b></b></i>`).join("")}</div>
     <div class="hd"><span class="av">TC</span><span>tika.cake<br><small>${s.t}</small></span><button data-sclose aria-label="Закрыть">${I.x}</button></div>
     <button class="tap l" data-snav="-1" aria-label="Назад"></button><button class="tap r" data-snav="1" aria-label="Дальше"></button>
     <div class="cap"><span class="sc">${s.sc}</span><h3>${esc(s.h)}</h3><p>${esc(s.x)}</p><button class="btn" data-sgo>${s.cta} ${I.chev}</button></div>
