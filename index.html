@@ -1,0 +1,627 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>КП для Tika Cake</title>
+<meta name="description" content="Коммерческое предложение ТОО «рэд логистик»: разработка интернет-магазина Tika Cake с интеграцией iiko, Kaspi и Forte.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#141414">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23141414'/%3E%3Ccircle cx='22' cy='22' r='5' fill='%23E8392B'/%3E%3C/svg%3E">
+<style>
+:root{
+  --accent:#E8392B; --accent-ink:#fff; --accent-soft:rgba(232,57,43,.12);
+  --bg:#F6F1EA; --surface:#FFFFFF; --surface-2:#EFE8DE; --ink:#141414; --muted:#6B645C; --line:rgba(20,20,20,.12);
+  --dark:#141414; --dark-2:#1E1E1E; --on-dark:#F6F1EA; --on-dark-muted:rgba(246,241,234,.62); --dark-line:rgba(246,241,234,.14);
+  --radius:20px; --shadow:0 1px 2px rgba(20,20,20,.04),0 12px 32px -12px rgba(20,20,20,.14);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#101010; --surface:#191919; --surface-2:#222; --ink:#F3EEE7; --muted:#A39B91; --line:rgba(243,238,231,.12);
+    --dark:#0A0A0A; --dark-2:#171717; --accent-soft:rgba(232,57,43,.16); --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 32px -12px rgba(0,0,0,.6);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101010; --surface:#191919; --surface-2:#222; --ink:#F3EEE7; --muted:#A39B91; --line:rgba(243,238,231,.12);
+  --dark:#0A0A0A; --dark-2:#171717; --accent-soft:rgba(232,57,43,.16); --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 32px -12px rgba(0,0,0,.6);
+  color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:"Onest",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+b,strong{font-weight:700}
+.wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* Навигация */
+.nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--dark) 86%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--dark-line);color:var(--on-dark)}
+.nav .wrap{display:flex;align-items:center;gap:24px;height:64px}
+.logo{font-weight:800;font-size:22px;white-space:nowrap;flex:none;letter-spacing:-.04em;text-decoration:none;color:var(--on-dark)}
+.logo i{color:var(--accent);font-style:normal}
+.nav-links{display:flex;gap:4px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+.nav-links::-webkit-scrollbar{display:none}
+.nav-links a{font-size:14px;text-decoration:none;color:var(--on-dark-muted);padding:8px 10px;border-radius:999px;white-space:nowrap;transition:.2s}
+.nav-links a:hover,.nav-links a.on{color:var(--on-dark);background:var(--dark-line)}
+.btn{display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:var(--accent-ink);text-decoration:none;font-weight:600;font-size:15px;padding:12px 20px;border-radius:999px;transition:transform .2s,box-shadow .2s;white-space:nowrap;border:0;cursor:pointer;font-family:inherit}
+.btn:hover{transform:translateY(-1px);box-shadow:0 10px 24px -8px rgba(232,57,43,.7)}
+.btn-ghost{background:transparent;color:var(--on-dark);border:1px solid var(--dark-line)}
+.btn-ghost:hover{box-shadow:none;border-color:var(--on-dark-muted)}
+.theme-btn{background:none;border:1px solid var(--dark-line);color:var(--on-dark);width:40px;height:40px;border-radius:50%;cursor:pointer;display:grid;place-items:center;flex:none}
+.nav .btn{padding:10px 16px;font-size:14px}
+
+/* Hero */
+.hero{background:var(--dark);color:var(--on-dark);position:relative;overflow:hidden;padding:96px 0 72px}
+.hero::before{content:"";position:absolute;width:560px;height:560px;border-radius:50%;background:var(--accent);top:-260px;right:-140px;animation:float 12s ease-in-out infinite}
+.hero::after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;border:1px solid var(--dark-line);top:300px;right:8%}
+@keyframes float{50%{transform:translate(-24px,18px) scale(1.03)}}
+.hero .wrap{position:relative;z-index:1}
+.eyebrow{font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+.hero h1{font-size:clamp(40px,7.4vw,92px);line-height:.98;letter-spacing:-.045em;font-weight:800;margin:20px 0 24px;max-width:900px}
+.hero h1 span{color:var(--on-dark-muted)}
+.hero .lead{font-size:clamp(18px,2.2vw,22px);color:var(--on-dark-muted);max-width:640px}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:36px}
+.meta{display:grid;grid-template-columns:repeat(4,1fr);gap:0 32px;margin-top:80px}
+.meta div{border-top:1px solid var(--dark-line);padding-top:14px}
+.meta small{display:block;font-size:13px;color:var(--on-dark-muted);margin-bottom:4px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:40px}
+.kpi{background:var(--dark-2);border:1px solid var(--dark-line);border-radius:var(--radius);padding:22px}
+.kpi b{display:block;font-size:clamp(24px,3vw,34px);letter-spacing:-.03em;line-height:1.1}
+.kpi span{font-size:14px;color:var(--on-dark-muted)}
+.kpi.hot{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.kpi.hot span{color:rgba(255,255,255,.82)}
+
+/* Секции */
+section{padding:96px 0;scroll-margin-top:64px}
+.sec-head{display:flex;align-items:baseline;gap:18px;border-top:2px solid var(--ink);padding-top:22px;margin-bottom:40px}
+.sec-head .n{color:var(--accent);font-weight:700;font-size:15px;font-variant-numeric:tabular-nums}
+.sec-head h2{font-size:clamp(30px,4.4vw,52px);letter-spacing:-.035em;line-height:1.05;font-weight:800}
+.sec-lead{font-size:19px;color:var(--muted);max-width:760px;margin:-16px 0 40px}
+.dark-sec{background:var(--dark);color:var(--on-dark)}
+.dark-sec .sec-head{border-color:var(--on-dark)}
+.dark-sec .sec-lead{color:var(--on-dark-muted)}
+
+/* Поток заказа */
+.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;counter-reset:f;margin-bottom:56px}
+.flow li{list-style:none;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px 20px;position:relative;box-shadow:var(--shadow)}
+.flow li::before{counter-increment:f;content:"0" counter(f);display:block;font-size:13px;font-weight:700;color:var(--accent);margin-bottom:18px}
+.flow li:not(:last-child)::after{content:"";position:absolute;right:-12px;top:50%;width:12px;height:2px;background:var(--accent)}
+.flow h3{font-size:18px;letter-spacing:-.01em;margin-bottom:6px}
+.flow p{font-size:14.5px;color:var(--muted)}
+.flow li.hl{background:var(--accent);border-color:var(--accent);color:#fff}
+.flow li.hl::before,.flow li.hl p{color:rgba(255,255,255,.85)}
+
+.stack{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow)}
+.stack .card{grid-column:span 2}
+.stack .card.wide{grid-column:span 3}
+.card h3{font-size:19px;margin-bottom:8px;letter-spacing:-.01em}
+.card p{color:var(--muted);font-size:15.5px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.tags span{font-size:12.5px;font-weight:600;padding:5px 10px;border-radius:999px;background:var(--surface-2)}
+.ico{width:44px;height:44px;border-radius:12px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;margin-bottom:18px}
+.ico svg{width:22px;height:22px}
+.note{font-size:15px;color:var(--muted);margin-top:20px}
+
+/* Таблицы работ */
+.rate{display:inline-flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:8px 8px 8px 18px;margin-bottom:28px;font-size:15px}
+.rate b{background:var(--ink);color:var(--bg);padding:6px 14px;border-radius:999px}
+.wt{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.wt-row{display:grid;grid-template-columns:minmax(180px,1.1fr) 2.4fr 80px 140px;gap:24px;padding:18px 26px;border-top:1px solid var(--line);position:relative;align-items:start}
+.wt-row:first-child{border-top:0}
+.wt-head{background:var(--ink);color:var(--bg);font-size:13px;font-weight:600;padding:14px 26px}
+.wt-name{font-weight:600}
+.wt-desc{color:var(--muted);font-size:15px}
+.wt-s{font-weight:600}
+.wt-bar{position:absolute;left:0;bottom:0;height:2px;width:100%}
+.wt-bar i{display:block;height:100%;background:var(--accent);opacity:.5;transform-origin:left;transform:scaleX(0);transition:transform 1s cubic-bezier(.2,.7,.2,1)}
+.wt.in .wt-bar i{transform:scaleX(1)}
+.wt-row:hover{background:var(--accent-soft)}
+.wt-head:hover{background:var(--ink)}
+.wt-total{background:var(--surface-2);font-weight:800;font-size:18px}
+.wt-total:hover{background:var(--surface-2)}
+.wt-total .num:last-child{color:var(--accent)}
+
+.callout{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:start;margin-top:28px;background:var(--dark);color:var(--on-dark);border-radius:var(--radius);padding:32px}
+.callout .ico{background:var(--accent);color:#fff;margin:0}
+.callout h3{font-size:22px;margin-bottom:8px}
+.callout p{color:var(--on-dark-muted)}
+.callout p b{color:var(--on-dark)}
+
+/* Опции */
+.opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+.opt{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:24px;display:flex;flex-direction:column;position:relative;transition:transform .25s,box-shadow .25s;box-shadow:var(--shadow)}
+.opt:hover{transform:translateY(-4px)}
+.opt h3{font-size:18px;margin-bottom:10px;letter-spacing:-.01em;padding-right:8px}
+.opt p{font-size:15px;color:var(--muted);flex:1}
+.opt-foot{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--line);margin-top:20px;padding-top:14px;font-size:14px;color:var(--muted)}
+.opt-foot b{font-size:19px;color:var(--ink)}
+.opt-rec{border:2px solid var(--accent)}
+.badge{align-self:flex-start;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:var(--accent);color:#fff;padding:5px 10px;border-radius:999px;margin-bottom:14px}
+.opts-total{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-top:16px;background:var(--surface-2);border-radius:var(--radius);padding:20px 26px;font-weight:700}
+.opts-total b{font-size:22px;color:var(--accent)}
+
+/* Сводка */
+.sum-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.sum{background:var(--dark-2);border:1px solid var(--dark-line);border-radius:var(--radius);padding:28px}
+.sum small{color:var(--on-dark-muted);font-size:14px}
+.sum b{display:block;font-size:clamp(28px,3.4vw,40px);letter-spacing:-.035em;margin:10px 0 4px;font-variant-numeric:tabular-nums}
+.sum span{color:var(--on-dark-muted);font-size:14px}
+.sum i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px;vertical-align:1px}
+.stackbar{display:flex;height:14px;border-radius:999px;overflow:hidden;margin:28px 0;gap:3px}
+.stackbar span{height:100%}
+.grand{display:flex;justify-content:space-between;align-items:end;flex-wrap:wrap;gap:16px;border-top:1px solid var(--dark-line);padding-top:28px}
+.grand small{color:var(--on-dark-muted);font-size:15px}
+.grand b{font-size:clamp(40px,7vw,80px);letter-spacing:-.05em;line-height:1;color:var(--accent);font-variant-numeric:tabular-nums}
+
+/* Гант */
+.gantt{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow)}
+.g-row{display:grid;grid-template-columns:210px 1fr;gap:16px;align-items:center;padding:7px 0}
+.g-label{font-size:15px;font-weight:500}
+.g-track{display:grid;grid-template-columns:repeat(16,1fr);gap:3px;position:relative;background:repeating-linear-gradient(90deg,transparent 0 calc(100%/16 - 1px),var(--line) calc(100%/16 - 1px) calc(100%/16))}
+.g-track i{height:30px;border-radius:8px;background:var(--accent);display:flex;align-items:center;padding:0 10px;transform-origin:left;transform:scaleX(0);transition:transform .9s cubic-bezier(.2,.7,.2,1)}
+.gantt.in .g-track i{transform:scaleX(1)}
+.g-track em{font-style:normal;font-size:12px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden}
+.g-weeks .g-track{background:none}
+.g-weeks .g-track span{font-size:12px;color:var(--muted);text-align:center}
+.g-weeks .g-label{font-size:12px;color:var(--muted)}
+
+.results{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px}
+.results .card h3{display:flex;gap:10px;align-items:center}
+.results .card h3::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent);flex:none}
+
+/* Команда */
+.team{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.member{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)}
+.avatar{width:56px;height:56px;border-radius:50%;background:var(--surface-2);display:grid;place-items:center;font-weight:800;margin-bottom:18px;font-size:18px}
+.member.lead .avatar{background:var(--accent);color:#fff}
+.member h3{font-size:17px;margin-bottom:6px}
+.member p{font-size:14.5px;color:var(--muted)}
+
+/* Списки-таблицы */
+.list{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.list-row{display:grid;grid-template-columns:1fr 1.2fr 1fr;gap:24px;padding:18px 26px;border-top:1px solid var(--line)}
+.list-row:first-child{border-top:0}
+.list-row > :first-child{font-weight:600}
+.list-row > :nth-child(2){color:var(--muted);font-size:15px}
+.list-row > :last-child{font-size:15px}
+.list-head{background:var(--ink);color:var(--bg);font-size:13px;font-weight:600;padding:14px 26px}
+.list-head > *{color:var(--bg)!important;font-weight:600!important;font-size:13px!important}
+
+.deps{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.deps .card h3{color:var(--accent)}
+
+/* Поддержка */
+.support{display:grid;grid-template-columns:1fr 1.3fr;gap:16px;margin-bottom:16px}
+.price-card{background:var(--accent);color:#fff;border-radius:var(--radius);padding:32px;position:relative;overflow:hidden}
+.price-card::after{content:"";position:absolute;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.12);right:-70px;bottom:-90px}
+.price-card small{font-weight:600;letter-spacing:.1em;text-transform:uppercase;font-size:12.5px;opacity:.85}
+.price-card b{display:block;font-size:clamp(40px,5vw,60px);letter-spacing:-.045em;line-height:1;margin:14px 0 6px}
+.price-card ul{list-style:none;margin-top:22px;display:grid;gap:8px;position:relative;z-index:1}
+.price-card li{padding-left:22px;position:relative;font-size:15.5px}
+.price-card li::before{content:"";position:absolute;left:0;top:8px;width:10px;height:6px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg)}
+.warranty{display:flex;flex-direction:column;justify-content:center}
+.warranty b{font-size:clamp(44px,6vw,72px);letter-spacing:-.05em;line-height:1;color:var(--accent)}
+.sla .list-row{grid-template-columns:.8fr 1.4fr 1fr 1fr}
+.prio{display:inline-flex;align-items:center;gap:8px}
+.prio::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--c)}
+
+/* Права */
+.rights{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-top:24px}
+.rights span{background:var(--dark-2);border:1px solid var(--dark-line);border-radius:14px;padding:16px;font-weight:600;font-size:15px}
+.rights span::before{content:"✓";color:var(--accent);margin-right:8px}
+
+/* Оплата */
+.pay{list-style:none;display:grid;gap:12px}
+.pay li{display:grid;grid-template-columns:auto 1fr auto;gap:22px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px 26px;box-shadow:var(--shadow)}
+.pay-step{font-weight:800;color:var(--accent);font-size:15px}
+.pay h3{font-size:18px}
+.pay p{font-size:15px;color:var(--muted)}
+.pay-sum{text-align:right}
+.pay-sum b{font-size:24px;letter-spacing:-.02em;display:block}
+.pay-sum small{font-size:13px;color:var(--muted);white-space:nowrap}
+
+/* Контакты */
+.contact{background:var(--dark);color:var(--on-dark);position:relative;overflow:hidden}
+.contact::before{content:"";position:absolute;width:420px;height:420px;border-radius:50%;background:var(--accent);left:-160px;bottom:-220px}
+.contact .wrap{position:relative}
+.contact h2{font-size:clamp(36px,6vw,72px);letter-spacing:-.045em;line-height:1;font-weight:800;max-width:780px}
+.contact-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:40px;margin-top:48px;align-items:end}
+.contact-grid p{color:var(--on-dark-muted)}
+.contact-grid .who{font-size:22px;font-weight:700;color:var(--on-dark)}
+.phones{display:grid;gap:10px}
+.phones a{display:flex;justify-content:space-between;align-items:center;gap:12px;text-decoration:none;border:1px solid var(--dark-line);border-radius:16px;padding:16px 20px;transition:.2s;background:var(--dark-2)}
+.phones a:hover{border-color:var(--accent)}
+.phones a small{color:var(--on-dark-muted)}
+.phones a b{font-size:18px}
+footer{background:var(--dark);color:var(--on-dark-muted);border-top:1px solid var(--dark-line);font-size:14px;padding:26px 0}
+footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+/* Реквизиты */
+.req{display:grid;grid-template-columns:1.6fr 1fr;gap:16px}
+.req-main,.req-sign{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:30px;box-shadow:var(--shadow)}
+.req small{font-size:12.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.req-main h3{font-size:22px;letter-spacing:-.02em;margin:10px 0 22px;line-height:1.25}
+.req dl{display:grid;grid-template-columns:170px 1fr;gap:12px 20px;font-size:15.5px}
+.req dt{color:var(--muted)}
+.mono{font-variant-numeric:tabular-nums;letter-spacing:.02em;font-weight:600}
+.req-sign{display:flex;flex-direction:column;justify-content:flex-end;gap:10px}
+.sign-line{border-bottom:1px solid var(--ink);height:64px;margin-top:auto}
+.req-sign b{font-size:20px}
+.req-sign span{color:var(--muted);font-size:14px}
+@media (max-width:720px){.req{grid-template-columns:1fr}.req dl{grid-template-columns:1fr;gap:2px}.req dd{margin-bottom:10px}.req-main,.req-sign{padding:22px}}
+
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}.wt-bar i,.g-track i{transform:none}}
+
+/* Адаптив */
+@media (max-width:1240px){.nav-links{display:none}.nav .theme-btn{margin-left:auto}}
+@media (max-width:1000px){
+  .flow{grid-template-columns:1fr 1fr}
+  .flow li::after{display:none}
+  .stack .card,.stack .card.wide{grid-column:span 3}
+  .team{grid-template-columns:1fr 1fr}
+  .results{grid-template-columns:1fr 1fr}
+  .support{grid-template-columns:1fr}
+  .nav-links{display:none}
+  .nav .btn{margin-left:auto}
+}
+@media (max-width:720px){
+  body{font-size:16px}
+  .wrap{padding:0 16px}
+  section{padding:64px 0}
+  .hero{padding:64px 0 48px}
+  .hero::before{width:200px;height:200px;top:-120px;right:-90px}
+  .hero::after{display:none}
+  .hero h1{font-size:36px}
+  .meta{grid-template-columns:1fr 1fr;gap:16px;margin-top:56px}
+  .kpis{grid-template-columns:1fr 1fr;gap:10px}
+  .kpi{padding:16px}
+  .flow{grid-template-columns:1fr}
+  .stack .card,.stack .card.wide{grid-column:span 6}
+  .wt-head{display:none}
+  .wt-row{grid-template-columns:1fr auto;gap:6px 16px;padding:18px}
+  .wt-name{grid-column:1/-1}
+  .wt-desc{grid-column:1/-1;margin-bottom:6px}
+  .wt-row .num{text-align:left}
+  .wt-row .num::before{content:attr(data-l) ": ";color:var(--muted);font-weight:400;font-size:13px}
+  .wt-row .num:last-of-type{text-align:right}
+  .wt-total{grid-template-columns:1fr auto}
+  .wt-total > span:nth-child(2){display:none}
+  .wt-total > span:first-child{grid-column:1/-1}
+  .callout{grid-template-columns:1fr;padding:24px}
+  .sum-grid{grid-template-columns:1fr}
+  .gantt{padding:16px;overflow-x:auto}
+  .g-row{grid-template-columns:1fr;gap:6px;min-width:0}
+  .g-weeks .g-label{display:none}
+  .g-track em{display:none}
+  .g-track i{height:22px}
+  .results,.team{grid-template-columns:1fr}
+  .list-head{display:none}
+  .list-row,.sla .list-row{grid-template-columns:1fr;gap:4px;padding:18px}
+  .pay li{grid-template-columns:auto 1fr;padding:18px}
+  .pay-sum{grid-column:2;text-align:left}
+  .contact-grid{grid-template-columns:1fr}
+  .nav .btn span{display:none}
+}
+@media print{
+  .nav,.hero-cta,.theme-btn{display:none}
+  .reveal{opacity:1;transform:none}
+  .wt-bar i,.g-track i{transform:none}
+  section{padding:40px 0;break-inside:avoid-page}
+  body{font-size:13px}
+}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="#top">рэд логистик<i>.</i></a>
+    <nav class="nav-links" aria-label="Разделы">
+      <a href="#offer">Решение</a><a href="#mvp">MVP</a><a href="#stage2">Этап 2</a><a href="#options">Опции</a><a href="#summary">Сводка</a><a href="#timeline">Сроки</a><a href="#support">Поддержка</a><a href="#payment">Оплата</a><a href="#requisites">Реквизиты</a>
+    </nav>
+    <button class="theme-btn" id="themeBtn" aria-label="Переключить тему"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+    <a class="btn" href="https://wa.me/77715469868" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.1-.1-.2-1.1-1.5-1.1-2.9s.7-2.1 1-2.4c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.6-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1l.9-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.1.1.6-.1 1.2z"/></svg><span>Обсудить проект</span></a>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Коммерческое предложение · для Tika Cake</div>
+    <h1>Интернет-магазин Tika Cake <span>с интеграцией iiko</span></h1>
+    <p class="lead">Мобильная витрина, которая сама принимает и оплачивает заказы — без участия оператора. Оплаченный заказ попадает в iiko нужного филиала или на доставку.</p>
+    <div class="hero-cta">
+      <a class="btn" href="#mvp">Смотреть смету
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12l7 7 7-7"/></svg></a>
+      <a class="btn btn-ghost" href="#timeline">Сроки и этапы</a>
+    </div>
+    <div class="kpis">
+      <div class="kpi hot"><b>7 522 500 ₸</b><span>стоимость MVP</span></div>
+      <div class="kpi"><b>16 недель</b><span>до запуска MVP</span></div>
+      <div class="kpi"><b>1003 ч</b><span>трудозатраты MVP</span></div>
+      <div class="kpi"><b>3 месяца</b><span>гарантии после запуска</span></div>
+    </div>
+    <div class="meta">
+      <div><small>Кому</small>Tika Cake</div>
+      <div><small>Исполнитель</small>ТОО «рэд логистик»</div>
+      <div><small>Дата</small>09.10.2026</div>
+      <div><small>Срок действия</small>30 календарных дней</div>
+    </div>
+  </div>
+</section>
+
+<section id="offer">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="n">01</span><h2>Что мы предлагаем</h2></div>
+    <p class="sec-lead reveal">Покупатель видит наличие в филиале, стоимость доставки по зоне, свои бонусы iiko и свободные интервалы — и оплачивает итоговую сумму через Kaspi или Forte. Статусы возвращаются в личный кабинет клиента.</p>
+    <ol class="flow reveal">
+      <li><h3>Витрина</h3><p>Наличие в филиале, варианты, допродажи в корзине</p></li>
+      <li><h3>Оформление</h3><p>Зона доставки, интервал, бонусы и промокоды iiko</p></li>
+      <li class="hl"><h3>Оплата</h3><p>Kaspi или Forte — сразу итоговая сумма</p></li>
+      <li><h3>iiko / доставка</h3><p>Заказ сам попадает в нужный филиал или в Курьерику</p></li>
+      <li><h3>Статусы</h3><p>В личном кабинете, SMS и WhatsApp</p></li>
+    </ol>
+
+    <h3 class="reveal" style="font-size:24px;letter-spacing:-.02em;margin-bottom:20px">Архитектура и стек</h3>
+    <div class="stack">
+      <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg></div><h3>Витрина</h3><p>Серверный рендеринг — быстро на телефоне, индексируется поисковиками.</p><div class="tags"><span>Next.js</span><span>React</span><span>TypeScript</span></div></div>
+      <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg></div><h3>Backend</h3><p>Redis-очередь для интеграций с повторами и журналом ошибок.</p><div class="tags"><span>Node.js</span><span>NestJS</span><span>PostgreSQL + PostGIS</span><span>Redis</span></div></div>
+      <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg></div><h3>Интеграции</h3><p>Учётная система, банки, доставка, карты и мессенджеры.</p><div class="tags"><span>iikoCloud API</span><span>Kaspi</span><span>ForteBank</span><span>Курьерика</span><span>2GIS</span><span>WhatsApp / SMS</span></div></div>
+      <div class="card wide reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h3>Хостинг в Казахстане</h3><p>Сервер в РК — требование закона о персональных данных. Ежедневные бэкапы, мониторинг.</p></div>
+      <div class="card wide reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg></div><h3>Открытый API</h3><p>Документированный API — основа будущего мобильного приложения без переделки backend.</p></div>
+    </div>
+    <p class="note reveal">Подробная логика реализации — в документе «Техническая спецификация», который прилагается к предложению.</p>
+  </div>
+</section>
+
+<section id="mvp" style="background:var(--surface-2)">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="n">02</span><h2>Этап 1 — MVP: трудозатраты и стоимость</h2></div>
+    <p class="sec-lead reveal">Состав MVP соответствует разделу 24 ТЗ, дополнительно включены скидка ко дню рождения и товары «под заказ» со сроком изготовления.</p>
+    <div class="rate reveal">Стоимость часа <b>7 500 ₸</b></div>
+    <div class="reveal"><div class="wt" role="table"><div class="wt-row wt-head" role="row"><span role="columnheader">Блок работ</span><span role="columnheader">Состав</span><span role="columnheader" class="num">Часы</span><span role="columnheader" class="num">Сумма, ₸</span></div>
+<div class="wt-row" role="row"><span class="wt-name" role="cell">Обследование и финальная спецификация</span><span class="wt-desc" role="cell">Аудит iiko (версия, модули, лицензии, доступы API), Kaspi/Forte, Курьерика; карта статусов; согласование спорных пунктов ТЗ; финальная спецификация</span><span class="num wt-h" role="cell" data-l="Часы">24</span><span class="num wt-s" role="cell" data-l="Сумма">180 000</span><span class="wt-bar" aria-hidden="true"><i style="width:15%"></i></span></div>
+<div class="wt-row" role="row"><span class="wt-name" role="cell">Дизайн / UX</span><span class="wt-desc" role="cell">Прототипы ключевых сценариев, UI-kit, макеты mobile (~25 экранов) и адаптация под десктоп, макеты админ-панели</span><span class="num wt-h" role="cell" data-l="Часы">80</span><span class="num wt-s" role="cell" data-l="Сумма">600 000</span><span class="wt-bar" aria-hidden="true"><i style="width:50%"></i></span></div>
+<div class="wt-row" role="row"><span class="wt-name" role="cell">Frontend (витрина)</span><span class="wt-desc" role="cell">Главная, каталог, поиск, карточка с вариантами, корзина с допродажами, оформление заказа, личный кабинет, карта зон, RU/KZ, юр. страницы, SEO-разметка</span><span class="num wt-h" role="cell" data-l="Часы">160</span><span class="num wt-s" role="cell" data-l="Сумма">1 200 000</span><span class="wt-bar" aria-hidden="true"><i style="width:100%"></i></span></div>
+<div class="wt-row" role="row"><span class="wt-name" role="cell">Backend (ядро)</span><span class="wt-desc" role="cell">API, каталог и варианты, корзина, заказы и статусная модель, клиенты, OTP-авторизация, сроки изготовления, мягкий резерв, фоновые задачи</span><span class="num wt-h" role="cell" data-l="Часы">130</span><span class="num wt-s" role="cell" data-l="Сумма">975 000</span><span class="wt-bar" aria-hidden="true"><i style="width:81%"></i></span></div>
+<div class="wt-row" role="row"><span class="wt-name" role="cell">Интеграция iiko</span><span class="wt-desc" role="cell">Номенклатура/цены/размеры, стоп-листы и остатки по филиалам, передача заказов, вебхуки статусов, клиент и бонусы iiko, очередь повторов, журнал ошибок</span><span class="num wt-h" role="cell" data-l="Часы">120</span><span class="num wt-s" role="cell" data-l="Сумма">900 000</span><span class="wt-bar" aria-hidden="true"><i style="width:75%"></i></span></div>
+<div class="wt-row" role="row"><span class="wt-name" role="cell">Платежи Kaspi / Forte</span><span class="wt-desc" role="cell">Создание платежа, приём callback, проверка статуса, идемпотентность, автоотмена неоплаченных, возвраты (полные/частичные), сверка</span><span class="num wt-h" role="cell" data-l="Часы">50</span><span class="num wt-s" role="cell" data-l="Сумма">375 000</span><span class="wt-bar" aria-hidden="true"><i style="width:31%"></i></span></div>
+<div class="wt-row" role="row"><span class="wt-name" role="cell">Доставка и самовывоз</span><span class="wt-desc" role="cell">Зоны-полигоны и тарифы, геокодинг адреса, слоты и лимиты, отсечка приёма, сценарий самовывоза, передача в Курьерику</span><span class="num wt-h" role="cell" data-l="Часы">56</span><span class="num wt-s" role="cell" data-l="Сумма">420 000</span><span class="wt-bar" aria-hidden="true"><i style="width:35%"></i></span></div>
+<div class="wt-row" role="row"><span class="wt-name" role="cell">Скидки, бонусы, промокоды</span><span class="wt-desc" role="cell">Движок правил и порядок применения, промокоды с ограничениями, скидка ко дню рождения, порог бесплатной доставки</span><span class="num wt-h" role="cell" data-l="Часы">40</span><span class="num wt-s" role="cell" data-l="Сумма">300 000</span><span class="wt-bar" aria-hidden="true"><i style="width:25%"></i></span></div>
+<div class="wt-row" role="row"><span class="wt-name" role="cell">Уведомления</span><span class="wt-desc" role="cell">SMS/WhatsApp по статусам, шаблоны, учёт согласий, лог отправок</span><span class="num wt-h" role="cell" data-l="Часы">24</span><span class="num wt-s" role="cell" data-l="Сумма">180 000</span><span class="wt-bar" aria-hidden="true"><i style="width:15%"></i></span></div>
+<div class="wt-row" role="row"><span class="wt-name" role="cell">Админ-панель</span><span class="wt-desc" role="cell">Заказы и карточка заказа, журнал действий, роли, промокоды, слоты, зоны, баннеры и контент главной, ошибки интеграции, настройки скидки ДР</span><span class="num wt-h" role="cell" data-l="Часы">100</span><span class="num wt-s" role="cell" data-l="Сумма">750 000</span><span class="wt-bar" aria-hidden="true"><i style="width:62%"></i></span></div>
+<div class="wt-row" role="row"><span class="wt-name" role="cell">Аналитика</span><span class="wt-desc" role="cell">Электронная торговля GA4 и Яндекс Метрики, собственные события, дашборды воронки, продаж, филиалов, промокодов в админ-панели</span><span class="num wt-h" role="cell" data-l="Часы">45</span><span class="num wt-s" role="cell" data-l="Сумма">337 500</span><span class="wt-bar" aria-hidden="true"><i style="width:28%"></i></span></div>
+<div class="wt-row" role="row"><span class="wt-name" role="cell">Инфраструктура и безопасность</span><span class="wt-desc" role="cell">Сервер в РК, CI/CD, тестовый и боевой контуры, HTTPS, резервное копирование, мониторинг ошибок</span><span class="num wt-h" role="cell" data-l="Часы">24</span><span class="num wt-s" role="cell" data-l="Сумма">180 000</span><span class="wt-bar" aria-hidden="true"><i style="width:15%"></i></span></div>
+<div class="wt-row" role="row"><span class="wt-name" role="cell">Тестирование</span><span class="wt-desc" role="cell">Функциональные и интеграционные тесты, тест оплат на стенде банка, проверка на устройствах iOS/Android</span><span class="num wt-h" role="cell" data-l="Часы">60</span><span class="num wt-s" role="cell" data-l="Сумма">450 000</span><span class="wt-bar" aria-hidden="true"><i style="width:38%"></i></span></div>
+<div class="wt-row" role="row"><span class="wt-name" role="cell">Запуск и обучение</span><span class="wt-desc" role="cell">Наполнение/перенос каталога, пилот на одном филиале, обучение кассиров и операторов, инструкции</span><span class="num wt-h" role="cell" data-l="Часы">30</span><span class="num wt-s" role="cell" data-l="Сумма">225 000</span><span class="wt-bar" aria-hidden="true"><i style="width:19%"></i></span></div>
+<div class="wt-row" role="row"><span class="wt-name" role="cell">Управление проектом</span><span class="wt-desc" role="cell">Планирование, демонстрации раз в неделю, коммуникация с iiko-дилером и банками</span><span class="num wt-h" role="cell" data-l="Часы">60</span><span class="num wt-s" role="cell" data-l="Сумма">450 000</span><span class="wt-bar" aria-hidden="true"><i style="width:38%"></i></span></div>
+<div class="wt-row wt-total" role="row"><span role="cell">Итого MVP</span><span role="cell"></span><span class="num" role="cell" data-l="Часы">1003</span><span class="num" role="cell" data-l="Сумма">7 522 500 ₸</span></div></div></div>
+    <div class="callout reveal">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
+      <div><h3>Фиксация цены</h3><p>Этап «Обследование» (<b>24 ч, 180 000 ₸</b>) выполняется первым и оплачивается отдельно. По его итогам мы подтверждаем, какие функции iiko, Kaspi, Forte и Курьерики работают штатно, и фиксируем стоимость MVP. Отклонение от этой оценки — <b>не более ±10%</b>, сумма обследования входит в итог.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="stage2">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="n">03</span><h2>Этап 2 — развитие после запуска</h2></div>
+    <div class="reveal"><div class="wt" role="table"><div class="wt-row wt-head" role="row"><span role="columnheader">Блок работ</span><span role="columnheader">Состав</span><span role="columnheader" class="num">Часы</span><span role="columnheader" class="num">Сумма, ₸</span></div>
+<div class="wt-row" role="row"><span class="wt-name" role="cell">«Мои события»</span><span class="wt-desc" role="cell">Даты близких и события клиента, напоминания в WhatsApp за N дней с персональным предложением</span><span class="num wt-h" role="cell" data-l="Часы">40</span><span class="num wt-s" role="cell" data-l="Сумма">300 000</span><span class="wt-bar" aria-hidden="true"><i style="width:62%"></i></span></div>
+<div class="wt-row" role="row"><span class="wt-name" role="cell">CRM-сценарии WhatsApp</span><span class="wt-desc" role="cell">Брошенная корзина, благодарность после заказа и запрос отзыва, «давно не заказывали», сегменты клиентов</span><span class="num wt-h" role="cell" data-l="Часы">64</span><span class="num wt-s" role="cell" data-l="Сумма">480 000</span><span class="wt-bar" aria-hidden="true"><i style="width:100%"></i></span></div>
+<div class="wt-row" role="row"><span class="wt-name" role="cell">Отзывы</span><span class="wt-desc" role="cell">Отзыв к товару после выдачи заказа, модерация в админ-панели, вывод на карточке</span><span class="num wt-h" role="cell" data-l="Часы">24</span><span class="num wt-s" role="cell" data-l="Сумма">180 000</span><span class="wt-bar" aria-hidden="true"><i style="width:38%"></i></span></div>
+<div class="wt-row" role="row"><span class="wt-name" role="cell">Избранное</span><span class="wt-desc" role="cell">Список избранного в личном кабинете</span><span class="num wt-h" role="cell" data-l="Часы">12</span><span class="num wt-s" role="cell" data-l="Сумма">90 000</span><span class="wt-bar" aria-hidden="true"><i style="width:19%"></i></span></div>
+<div class="wt-row" role="row"><span class="wt-name" role="cell">Персональные рекомендации</span><span class="wt-desc" role="cell">Рекомендации по истории покупок и совместным покупкам</span><span class="num wt-h" role="cell" data-l="Часы">40</span><span class="num wt-s" role="cell" data-l="Сумма">300 000</span><span class="wt-bar" aria-hidden="true"><i style="width:62%"></i></span></div>
+<div class="wt-row" role="row"><span class="wt-name" role="cell">Комплекты и динамические предложения</span><span class="wt-desc" role="cell">Конструктор комплектов, предложения по сумме и составу корзины</span><span class="num wt-h" role="cell" data-l="Часы">32</span><span class="num wt-s" role="cell" data-l="Сумма">240 000</span><span class="wt-bar" aria-hidden="true"><i style="width:50%"></i></span></div>
+<div class="wt-row" role="row"><span class="wt-name" role="cell">BI-аналитика</span><span class="wt-desc" role="cell">Когортный анализ, LTV, повторные покупки, выгрузки</span><span class="num wt-h" role="cell" data-l="Часы">40</span><span class="num wt-s" role="cell" data-l="Сумма">300 000</span><span class="wt-bar" aria-hidden="true"><i style="width:62%"></i></span></div>
+<div class="wt-row wt-total" role="row"><span role="cell">Итого этап 2</span><span role="cell"></span><span class="num" role="cell" data-l="Часы">252</span><span class="num" role="cell" data-l="Сумма">1 890 000 ₸</span></div></div></div>
+    <div class="callout reveal">
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg></div>
+      <div><h3>Мобильное приложение iOS / Android</h3><p>Оцениваем отдельно после запуска сайта. Ориентир — <b>350–450 часов</b>: backend и API будут готовы, разрабатывается только клиентская часть.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="options" style="background:var(--surface-2)">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="n">04</span><h2>Дополнительные предложения</h2></div>
+    <p class="sec-lead reveal">Механики сверх ТЗ, которые мы рекомендуем для Tika Cake. Можно включить в MVP или во второй этап.</p>
+    <div class="opts"><article class="opt opt-rec"><span class="badge">Рекомендуем</span><h3>QR-код заказа на самовывоз</h3><p>Клиент показывает QR в личном кабинете, кассир сканирует — заказ открывается мгновенно, выдача без поиска по телефону</p><div class="opt-foot"><span>12 ч</span><b>90 000 ₸</b></div></article>
+<article class="opt"><h3>Надпись на торте и фото-референс</h3><p>Поле надписи с лимитом символов и загрузка фото дизайна; передаётся в комментарий заказа iiko и на производство</p><div class="opt-foot"><span>16 ч</span><b>120 000 ₸</b></div></article>
+<article class="opt"><h3>Лимит производства «под заказ»</h3><p>Ограничение количества тортов под заказ на дату и филиал/цех; даты без мощности закрываются автоматически</p><div class="opt-foot"><span>20 ч</span><b>150 000 ₸</b></div></article>
+<article class="opt opt-rec"><span class="badge">Рекомендуем</span><h3>Заказ оператором за клиента</h3><p>Оператор собирает заказ в админ-панели по звонку, клиент получает ссылку на оплату в WhatsApp — заменяет текущий удалённый счёт</p><div class="opt-foot"><span>24 ч</span><b>180 000 ₸</b></div></article>
+<article class="opt"><h3>Telegram-контур для персонала</h3><p>Дублирование заказов в рабочие чаты филиалов, резервный канал при сбое iiko, кнопки смены статуса</p><div class="opt-foot"><span>20 ч</span><b>150 000 ₸</b></div></article>
+<article class="opt"><h3>Ежедневная сводка руководителю</h3><p>Каждое утро в Telegram: выручка, заказы, средний чек, проблемные заказы за вчера</p><div class="opt-foot"><span>8 ч</span><b>60 000 ₸</b></div></article>
+<article class="opt"><h3>PWA</h3><p>Установка сайта на главный экран телефона как приложение, кеш каталога, быстрое повторное открытие</p><div class="opt-foot"><span>12 ч</span><b>90 000 ₸</b></div></article></div>
+    <div class="opts-total reveal"><span>Итого все опции · 112 ч</span><b>840 000 ₸</b></div>
+    <p class="note reveal">Наш приоритет: <b>заказ оператором со ссылкой на оплату</b> (полностью заменяет удалённый счёт Kaspi для телефонных заказов) и <b>QR-код самовывоза</b> (выдача за секунды в часы пик).</p>
+  </div>
+</section>
+
+<section id="summary" class="dark-sec">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="n">05</span><h2>Сводка</h2></div>
+    <div class="sum-grid">
+      <div class="sum reveal"><small><i style="background:var(--accent)"></i>MVP (включая обследование)</small><b>7 522 500 ₸</b><span>1003 часов</span></div>
+      <div class="sum reveal"><small><i style="background:#F6F1EA"></i>Этап 2</small><b>1 890 000 ₸</b><span>252 часа</span></div>
+      <div class="sum reveal"><small><i style="background:#8A847C"></i>Дополнительные предложения</small><b>840 000 ₸</b><span>112 часов</span></div>
+    </div>
+    <div class="stackbar reveal" role="img" aria-label="Доли этапов в общей стоимости"><span style="width:73.4%;background:var(--accent)"></span><span style="width:18.4%;background:#F6F1EA"></span><span style="width:8.2%;background:#8A847C"></span></div>
+    <div class="grand reveal"><div><small>Всего при полном объёме · 1367 часов</small></div><b>10 252 500 ₸</b></div>
+  </div>
+</section>
+
+<section id="timeline">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="n">06</span><h2>Сроки</h2></div>
+    <p class="sec-lead reveal">Срок MVP — <b style="color:var(--ink)">16 недель</b> (около 4 месяцев) с момента подписания договора и предоставления доступов к iiko и тестовым стендам банков. Работы идут параллельно.</p>
+    <div class="reveal"><div class="gantt"><div class="g-row g-weeks"><span class="g-label">Неделя</span><div class="g-track"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span></div></div><div class="g-row"><span class="g-label">Обследование</span><div class="g-track"><i style="grid-column:1/3"><em>1–2 нед.</em></i></div></div><div class="g-row"><span class="g-label">Дизайн / UX</span><div class="g-track"><i style="grid-column:2/6"><em>2–5 нед.</em></i></div></div><div class="g-row"><span class="g-label">Backend, iiko, платежи</span><div class="g-track"><i style="grid-column:3/12"><em>3–11 нед.</em></i></div></div><div class="g-row"><span class="g-label">Frontend витрины</span><div class="g-track"><i style="grid-column:5/13"><em>5–12 нед.</em></i></div></div><div class="g-row"><span class="g-label">Админ-панель, аналитика</span><div class="g-track"><i style="grid-column:8/14"><em>8–13 нед.</em></i></div></div><div class="g-row"><span class="g-label">Тестирование, пилот</span><div class="g-track"><i style="grid-column:13/16"><em>13–15 нед.</em></i></div></div><div class="g-row"><span class="g-label">Запуск, обучение</span><div class="g-track"><i style="grid-column:16/17"><em>16 нед.</em></i></div></div></div></div>
+    <div class="results">
+      <div class="card reveal"><h3>Обследование</h3><p>Таблица возможностей iiko/Kaspi/Forte/Курьерики, финальная спецификация, фиксированная цена</p></div>
+      <div class="card reveal"><h3>Дизайн / UX</h3><p>Согласованные макеты mobile и desktop, прототип оформления заказа</p></div>
+      <div class="card reveal"><h3>Backend, iiko, платежи</h3><p>Демонстрация на тестовом стенде: заказ создан в iiko, оплата проходит, бонусы списываются</p></div>
+      <div class="card reveal"><h3>Frontend, админ-панель</h3><p>Рабочий сайт и кабинет администратора на тестовом контуре</p></div>
+      <div class="card reveal"><h3>Тестирование, пилот</h3><p>Неделя работы на одном филиале с реальными заказами</p></div>
+      <div class="card reveal"><h3>Запуск</h3><p>Подключение всех филиалов, обучение персонала, инструкции</p></div>
+    </div>
+    <p class="note reveal">Этап 2 — 6–8 недель после запуска MVP, порядок блоков определяем по данным аналитики первого месяца.</p>
+  </div>
+</section>
+
+<section id="team" style="background:var(--surface-2)">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="n">07</span><h2>Команда</h2></div>
+    <div class="team">
+      <div class="member lead reveal"><div class="avatar">АТ</div><h3>Руководитель проекта, архитектор</h3><p>Тасболатов А. Г. — архитектура, backend, интеграции iiko и платежей, коммуникация с заказчиком</p></div>
+      <div class="member reveal"><div class="avatar">UX</div><h3>UI/UX-дизайнер</h3><p>Прототипы, макеты, UI-kit</p></div>
+      <div class="member reveal"><div class="avatar">FE</div><h3>Frontend-разработчик</h3><p>Витрина и админ-панель</p></div>
+      <div class="member reveal"><div class="avatar">QA</div><h3>QA-инженер</h3><p>Тестирование на устройствах, сценарии приёмки</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="n">08</span><h2>Ежемесячные сервисы и лицензии</h2></div>
+    <p class="sec-lead reveal">Оплачиваются Tika Cake напрямую поставщикам, все учётные записи оформляются на Tika Cake.</p>
+    <div class="list reveal">
+      <div class="list-row list-head"><span>Сервис</span><span>Назначение</span><span>Стоимость</span></div>
+      <div class="list-row"><span>Сервер в РК + резервное хранилище</span><span>Хостинг сайта, базы, бэкапов</span><span>ориентир 25–50 тыс. ₸/мес</span></div>
+      <div class="list-row"><span>Лицензии iiko</span><span>iikoCloud API, модуль доставки, iikoCard (лояльность)</span><span>по прайсу дилера iiko; возможно, уже есть</span></div>
+      <div class="list-row"><span>Эквайринг Kaspi / Forte</span><span>Онлайн-оплата</span><span>комиссия банка с транзакции</span></div>
+      <div class="list-row"><span>WhatsApp Business API</span><span>Коды входа, уведомления, рассылки</span><span>по тарифу провайдера + оплата диалогов Meta</span></div>
+      <div class="list-row"><span>SMS-провайдер</span><span>Резервный канал кодов и уведомлений</span><span>оплата за сообщение</span></div>
+      <div class="list-row"><span>2GIS API</span><span>Геокодинг адресов, карта зон</span><span>по тарифу 2GIS, зависит от нагрузки</span></div>
+      <div class="list-row"><span>Онлайн-касса (при выборе схемы)</span><span>Фискальные чеки онлайн-оплат</span><span>по тарифу оператора</span></div>
+      <div class="list-row"><span>Домен, SSL</span><span>Адрес сайта, HTTPS</span><span>домен у Tika Cake; SSL бесплатно</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="deps" style="background:var(--surface-2)">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="n">09</span><h2>Зависимости от внешних систем</h2></div>
+    <p class="sec-lead reveal">Требуют подтверждения на этапе обследования.</p>
+    <div class="deps">
+      <div class="card reveal"><h3>iiko</h3><p>Доступ к остаткам складов через API сервера, наличие модуля доставки и iikoCard, передача внешней оплаты и скидок, webhook статусов.</p></div>
+      <div class="card reveal"><h3>Kaspi</h3><p>Подключение Tika Cake к онлайн-оплате Kaspi для интернет-магазина, возвраты через API.</p></div>
+      <div class="card reveal"><h3>ForteBank</h3><p>Договор эквайринга, тестовый стенд, частичные возвраты.</p></div>
+      <div class="card reveal"><h3>Курьерика</h3><p>Наличие API для передачи заказов, статусов и ссылки на трекинг.</p></div>
+      <div class="card reveal"><h3>WhatsApp Business API</h3><p>Верификация бизнеса и утверждение шаблонов сообщений Meta (обычно 1–2 недели).</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="support">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="n">10</span><h2>Поддержка после запуска</h2></div>
+    <div class="support">
+      <div class="card warranty reveal"><b>3 месяца</b><h3 style="margin-top:14px">Гарантия после запуска</h3><p>Бесплатно исправляем ошибки и несоответствия спецификации.</p></div>
+      <div class="price-card reveal">
+        <small>Пакет поддержки</small>
+        <b>300 000 ₸<span style="font-size:.4em;letter-spacing:0;font-weight:600"> / мес</span></b>
+        <div>20 часов в месяц</div>
+        <ul>
+          <li>Мониторинг, обновления, мелкие доработки, консультации</li>
+          <li>Неиспользованные часы переносятся на следующий месяц (не более 10)</li>
+          <li>Часы сверх пакета — 7 500 ₸</li>
+        </ul>
+      </div>
+    </div>
+    <div class="list sla reveal">
+      <div class="list-row list-head"><span>Приоритет</span><span>Пример</span><span>Реакция</span><span>Решение / обходной путь</span></div>
+      <div class="list-row"><span class="prio" style="--c:#E5484D">Критический</span><span>Не проходят заказы или оплата</span><span>1 час, ежедневно 9:00–21:00</span><span>до 4 часов</span></div>
+      <div class="list-row"><span class="prio" style="--c:#E8392B">Высокий</span><span>Не работает доставка, бонусы, админ-панель</span><span>4 часа в рабочее время</span><span>1 рабочий день</span></div>
+      <div class="list-row"><span class="prio" style="--c:#8A847C">Обычный</span><span>Ошибка отображения, текст, настройка</span><span>1 рабочий день</span><span>по согласованному плану</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="rights" class="dark-sec">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="n">11</span><h2>Права и передача</h2></div>
+    <p class="sec-lead reveal">Всё принадлежит Tika Cake. Код хранится в репозитории Tika Cake с первого дня, по завершении передаётся техническая документация и инструкции. Условия закрепляются в договоре.</p>
+    <div class="rights reveal"><span>Исходный код</span><span>Дизайн-макеты</span><span>База данных</span><span>Домен</span><span>Сервер</span><span>Все доступы</span></div>
+  </div>
+</section>
+
+<section id="payment">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="n">12</span><h2>Условия оплаты</h2></div>
+    <ol class="pay reveal"><li><span class="pay-step">01</span><div><h3>Обследование</h3><p>До начала работ</p></div><div class="pay-sum"><b>180 000 ₸</b></div></li><li><span class="pay-step">02</span><div><h3>Аванс MVP</h3><p>После подписания договора на фиксированную стоимость</p></div><div class="pay-sum"><b>30%</b><small>≈ 2 202 750 ₸</small></div></li><li><span class="pay-step">03</span><div><h3>Второй платёж</h3><p>Согласованы макеты, демонстрация заказа в iiko и оплаты на тестовом стенде</p></div><div class="pay-sum"><b>30%</b><small>≈ 2 202 750 ₸</small></div></li><li><span class="pay-step">04</span><div><h3>Третий платёж</h3><p>Передача на пилот в филиал</p></div><div class="pay-sum"><b>30%</b><small>≈ 2 202 750 ₸</small></div></li><li><span class="pay-step">05</span><div><h3>Финальный платёж</h3><p>Запуск во всех филиалах и подписание акта</p></div><div class="pay-sum"><b>10%</b><small>≈ 734 250 ₸</small></div></li></ol>
+    <p class="note reveal">Стоимость MVP при оплате считается без суммы обследования, уже оплаченной заказчиком (7 522 500 − 180 000 = 7 342 500 ₸). Суммы этапов указаны ориентировочно и уточняются после фиксации цены по итогам обследования.</p>
+  </div>
+</section>
+
+<section id="contacts" class="contact">
+  <div class="wrap">
+    <div class="eyebrow reveal">13 · Контакты</div>
+    <h2 class="reveal" style="margin-top:18px">Начнём с обследования — и зафиксируем цену.</h2>
+    <div class="contact-grid">
+      <div class="reveal"><p class="who">Тасболатов Арман Галимжанович</p><p>Руководитель проекта · ТОО «рэд логистик»</p></div>
+      <div class="phones reveal">
+        <a href="https://wa.me/77715469868" target="_blank" rel="noopener"><small>WhatsApp</small><b>+7 771 546 98 68</b></a>
+        <a href="https://wa.me/77081886356" target="_blank" rel="noopener"><small>WhatsApp</small><b>+7 708 188 63 56</b></a>
+        <a href="tel:+77715469868"><small>Телефон</small><b>+7 771 546 98 68</b></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="requisites">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="n">14</span><h2>Реквизиты исполнителя</h2></div>
+    <div class="req reveal">
+      <div class="req-main">
+        <small>Исполнитель</small>
+        <h3>Товарищество с ограниченной ответственностью «рэд логистик»</h3>
+        <dl>
+          <dt>Юридический адрес</dt><dd>Республика Казахстан, город Астана, район Байконыр, проспект Абай, здание 45, почтовый индекс 010000</dd>
+          <dt>БИН</dt><dd class="mono">220740027686</dd>
+          <dt>ИИК</dt><dd class="mono">KZ22722S000017233145</dd>
+          <dt>Банк</dt><dd>АО «Kaspi Bank», БИК <span class="mono">CASPKZKA</span>, КБе 17</dd>
+        </dl>
+      </div>
+      <div class="req-sign">
+        <small>Директор</small>
+        <div class="sign-line"></div>
+        <b>Ж. Бекбаев</b>
+        <span>М.П.</span>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer><div class="wrap"><span>ТОО «рэд логистик» · БИН 220740027686</span><span>Предложение действительно 30 дней с 09.10.2026</span></div></footer>
+
+<script>
+(function(){
+  // Тема: ручной переключатель поверх системной
+  var root=document.documentElement,key="kp-theme";
+  try{var t=localStorage.getItem(key);if(t)root.setAttribute("data-theme",t)}catch(e){}
+  document.getElementById("themeBtn").addEventListener("click",function(){
+    var cur=root.getAttribute("data-theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");
+    var next=cur==="dark"?"light":"dark";root.setAttribute("data-theme",next);
+    try{localStorage.setItem(key,next)}catch(e){}
+  });
+  // Анимация появления и подсветка пункта меню
+  var els=document.querySelectorAll(".reveal,.wt,.gantt");
+  if(!("IntersectionObserver" in window)){els.forEach(function(e){e.classList.add("in")});return}
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}})},{threshold:.12});
+  els.forEach(function(e){io.observe(e)});
+  var links={};document.querySelectorAll(".nav-links a").forEach(function(a){links[a.getAttribute("href").slice(1)]=a});
+  var so=new IntersectionObserver(function(es){es.forEach(function(e){var a=links[e.target.id];if(a&&e.isIntersecting){for(var k in links)links[k].classList.remove("on");a.classList.add("on")}})},{rootMargin:"-45% 0px -50% 0px"});
+  document.querySelectorAll("section[id]").forEach(function(s){so.observe(s)});
+})();
+</script>
+</body>
+</html>
