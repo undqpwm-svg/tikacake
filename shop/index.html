@@ -87,9 +87,9 @@ main{flex:1;padding:4px 16px 150px;display:flex;flex-direction:column;gap:26px}
 .story .ring svg{width:100%;height:100%}
 
 /* Карусель акций */
-.slides{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin-inline:-16px;padding-inline:16px;scrollbar-width:none;scroll-padding-inline:16px}
+.slides{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin-inline:-16px;padding:4px 16px 22px;margin-block:-4px 0;scrollbar-width:none;scroll-padding-inline:16px}
 .slides::-webkit-scrollbar{display:none}
-.slide{flex:0 0 100%;scroll-snap-align:start;border-radius:28px;padding:20px 18px;min-height:196px;position:relative;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) 128px;gap:10px;align-items:center;text-align:left;color:#fff;box-shadow:var(--shadow)}
+.slide{flex:0 0 100%;scroll-snap-align:start;border-radius:28px;padding:20px 18px;min-height:196px;position:relative;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) 128px;gap:10px;align-items:center;text-align:left;color:#fff;box-shadow:0 10px 22px -14px rgba(120,70,170,.55)}
 .slide.s1{background:linear-gradient(140deg,#a774e2 0%,#c98be0 60%,#e9a6d3 100%)}
 .slide.s2{background:linear-gradient(140deg,#ee7fa9 0%,#f39ab7 55%,#fbbfa6 100%)}
 .slide.s3{background:linear-gradient(140deg,#f2a874 0%,#f5b98a 55%,#f7c9a8 100%)}
@@ -102,9 +102,9 @@ main{flex:1;padding:4px 16px 150px;display:flex;flex-direction:column;gap:26px}
 .slide .orb{width:128px;height:128px;border-radius:50%;border:5px solid rgba(255,255,255,.75);overflow:hidden;position:relative;background:rgba(255,255,255,.3);box-shadow:0 18px 30px -14px rgba(60,20,90,.55)}
 .slide .orb svg{width:100%;height:100%}
 .slide .chip-p{position:absolute;right:6px;bottom:12px;background:#fff;color:var(--plum);font-family:var(--display);font-weight:600;font-size:12px;padding:6px 10px;border-radius:99px;box-shadow:var(--shadow-s)}
-.dots{display:flex;gap:6px;justify-content:center;margin-top:-14px}
-.dots i{width:6px;height:6px;border-radius:3px;background:var(--line);transition:width .25s,background .25s}
-.dots i.on{width:20px;background:var(--accent)}
+.dots{display:flex;gap:5px;justify-content:center;margin-top:-20px}
+.dots i{width:6px;height:6px;border-radius:3px;background:#e4d8f1;transition:width .3s ease,background .3s ease}
+.dots i.on{width:18px;background:var(--accent)}
 
 /* Мини-карта скидки */
 .mycard{display:flex;align-items:center;gap:14px;background:var(--card);border-radius:22px;padding:14px 14px 14px 16px;box-shadow:var(--shadow-s);border:1px solid var(--line);text-align:left;width:100%}
