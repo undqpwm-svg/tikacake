@@ -1,0 +1,792 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#8b55c8">
+<meta name="robots" content="noindex">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>
+<title>Tika Cake</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700&family=Montserrat:wght@400;500;600;700&display=swap">
+<style>
+/* Витрина кондитерской: товар на пастельной «подложке», много воздуха, плавающее меню. Сиреневая гамма tikacake.kz. */
+:root{
+  --bg:#fcfaff; --card:#ffffff; --soft:#f4eefb; --line:#ebe3f5;
+  --fg:#261d30; --muted:#857a91; --accent:#8b55c8; --accent-ink:#ffffff; --accent-soft:#f0e6fb; --plum:#4f2878;
+  --ok:#2b8a5a; --warn:#d0532e; --wa:#25d366;
+  --t-lilac:#efe6fb; --t-pink:#fce9ef; --t-peach:#fdeedf; --t-mint:#ecf3e1; --t-cream:#f9f1e2; --t-choc:#f3e8e1;
+  --glass:rgba(255,255,255,.86); --shadow:0 10px 30px -10px rgba(79,40,120,.28); --shadow-s:0 2px 10px rgba(79,40,120,.08);
+  --display:"Unbounded","Montserrat",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --font:"Montserrat",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#141018; --card:#1d1723; --soft:#251d2e; --line:#33293e;
+  --fg:#f3eef8; --muted:#a99db6; --accent:#b98ff0; --accent-ink:#1a1222; --accent-soft:#2f2440; --plum:#dcc4fa;
+  --ok:#5cc28c; --warn:#ff8a5c;
+  --t-lilac:#2a2138; --t-pink:#33212b; --t-peach:#33271f; --t-mint:#232c1f; --t-cream:#2f2a20; --t-choc:#2e2420;
+  --glass:rgba(29,23,35,.86); --shadow:0 10px 30px -10px rgba(0,0,0,.6); --shadow-s:0 2px 10px rgba(0,0,0,.3); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141018; --card:#1d1723; --soft:#251d2e; --line:#33293e;
+  --fg:#f3eef8; --muted:#a99db6; --accent:#b98ff0; --accent-ink:#1a1222; --accent-soft:#2f2440; --plum:#dcc4fa;
+  --ok:#5cc28c; --warn:#ff8a5c;
+  --t-lilac:#2a2138; --t-pink:#33212b; --t-peach:#33271f; --t-mint:#232c1f; --t-cream:#2f2a20; --t-choc:#2e2420;
+  --glass:rgba(29,23,35,.86); --shadow:0 10px 30px -10px rgba(0,0,0,.6); --shadow-s:0 2px 10px rgba(0,0,0,.3); color-scheme:dark}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:15px;line-height:1.45;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none;padding:0}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+a{color:var(--accent)}
+.app{max-width:480px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;background:var(--bg)}
+@media (min-width:520px){.app{border-inline:1px solid var(--line)}}
+.t-lilac{background:var(--t-lilac)}.t-pink{background:var(--t-pink)}.t-peach{background:var(--t-peach)}
+.t-mint{background:var(--t-mint)}.t-cream{background:var(--t-cream)}.t-choc{background:var(--t-choc)}
+
+/* Шапка */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--glass);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);
+  display:flex;align-items:center;gap:12px;padding:10px 16px;min-height:60px}
+.brand{display:flex;flex-direction:column;line-height:1.05}
+.brand b{font-family:var(--display);font-weight:700;font-size:18px;letter-spacing:.04em;color:var(--plum)}
+.brand span{font-size:11px;color:var(--muted);font-weight:500;letter-spacing:.02em}
+.top h1{font-family:var(--display);font-size:17px;margin:0;font-weight:600;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.iconbtn{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:var(--card);box-shadow:var(--shadow-s);flex:none}
+.iconbtn svg{width:20px;height:20px}
+.spacer{flex:1}
+.proto{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent-soft);background:var(--card);padding:5px 9px;border-radius:99px}
+
+main{flex:1;padding:6px 16px 120px;display:flex;flex-direction:column;gap:26px}
+.sec{display:flex;flex-direction:column;gap:14px}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.sec-h h2{font-family:var(--display);font-size:17px;margin:0;font-weight:600;text-wrap:balance}
+.sec-h button{color:var(--accent);font-weight:600;font-size:13px}
+
+/* Поиск */
+.search{display:flex;align-items:center;gap:10px;background:var(--card);box-shadow:var(--shadow-s);border-radius:16px;padding:0 14px;height:50px}
+.search input{border:0;background:none;outline:none;flex:1;min-width:0;height:100%}
+.search input::placeholder{color:var(--muted)}
+.search svg{width:19px;height:19px;color:var(--accent);flex:none}
+
+/* Торт недели */
+.hero{border-radius:28px;padding:22px 20px 20px;display:grid;grid-template-columns:minmax(0,1fr) 46%;gap:6px;align-items:center;position:relative;overflow:hidden;text-align:left;width:100%}
+.hero::before{content:"";position:absolute;right:-60px;top:-50px;width:240px;height:240px;border-radius:50%;background:var(--card);opacity:.55}
+.hero > *{position:relative}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.hero h2{font-family:var(--display);font-size:22px;line-height:1.12;margin:8px 0 8px;font-weight:700;color:var(--plum);text-wrap:balance}
+.hero p{margin:0 0 14px;font-size:13px;color:var(--muted)}
+.hero .art{width:118%;margin-left:-10%;aspect-ratio:200/170;max-width:none}
+.hero .cta{display:inline-flex;align-items:center;gap:8px;background:var(--plum);color:var(--bg);font-weight:700;font-size:14px;padding:11px 16px;border-radius:14px}
+
+/* Акции */
+.promos{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.promo{border-radius:22px;padding:14px;display:flex;flex-direction:column;gap:4px;text-align:left;background:var(--card);box-shadow:var(--shadow-s)}
+.promo b{font-family:var(--display);font-size:22px;font-weight:700;color:var(--accent);line-height:1.1}
+.promo span{font-size:12.5px;color:var(--muted);line-height:1.35}
+
+/* Категории */
+.cats{display:flex;gap:12px;overflow-x:auto;margin-inline:-16px;padding:2px 16px 4px;scrollbar-width:none}
+.cats::-webkit-scrollbar{display:none}
+.cat{flex:none;width:84px;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:12px;font-weight:600}
+.cat i{width:76px;height:76px;border-radius:24px;display:grid;place-items:center}
+.cat i svg{width:66px;height:56px}
+
+/* Карточки */
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 12px}
+.card{display:flex;flex-direction:column;gap:8px;text-align:left;cursor:pointer}
+.pic{aspect-ratio:1/1.02;border-radius:24px;display:grid;place-items:center;position:relative;max-width:100%;overflow:hidden}
+.pic svg{width:96%;height:auto}
+.tag{position:absolute;top:10px;left:10px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:5px 8px;border-radius:9px;background:var(--card);color:var(--accent);box-shadow:var(--shadow-s)}
+.card .nm{font-weight:600;font-size:14.5px;line-height:1.25;padding-inline:2px}
+.card .wt{font-size:12px;color:var(--muted);padding-inline:2px;margin-top:-6px}
+.card .row{display:flex;align-items:center;justify-content:space-between;gap:6px;padding-inline:2px}
+.price{font-family:var(--display);font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;font-size:14px}
+.price .from{font-family:var(--font);font-weight:500;color:var(--muted);font-size:12px}
+.add{width:38px;height:38px;border-radius:13px;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;flex:none;box-shadow:0 6px 14px -6px var(--accent)}
+.add svg{width:18px;height:18px}
+.add.in{background:var(--accent-soft);color:var(--accent);box-shadow:none;width:auto;padding:0 12px;font-weight:700;font-size:13px}
+
+/* Чипы */
+.chips{display:flex;gap:8px;overflow-x:auto;margin-inline:-16px;padding:8px 16px;scrollbar-width:none;position:sticky;top:calc(60px + env(safe-area-inset-top,0px));background:var(--bg);z-index:10}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;padding:9px 14px;border-radius:99px;background:var(--card);box-shadow:var(--shadow-s);font-weight:600;font-size:13px;white-space:nowrap}
+.chip small{color:var(--muted);font-weight:500;margin-left:5px}
+.chip[aria-pressed="true"]{background:var(--plum);color:var(--bg)}
+.chip[aria-pressed="true"] small{color:inherit;opacity:.7}
+
+/* Плавающее меню */
+.nav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(10px + env(safe-area-inset-bottom,0px));width:calc(100% - 24px);max-width:456px;z-index:30;
+  background:var(--glass);backdrop-filter:saturate(1.4) blur(16px);-webkit-backdrop-filter:saturate(1.4) blur(16px);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);
+  display:grid;grid-template-columns:repeat(5,1fr);padding:6px}
+.nav button{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10.5px;font-weight:600;color:var(--muted);padding:7px 0 6px;border-radius:18px;position:relative}
+.nav button svg{width:22px;height:22px}
+.nav button[aria-current="page"]{color:var(--accent);background:var(--accent-soft)}
+.badge{position:absolute;top:2px;left:calc(50% + 5px);min-width:18px;height:18px;border-radius:9px;background:var(--warn);color:#fff;font-size:10.5px;display:grid;place-items:center;padding:0 5px;font-variant-numeric:tabular-nums}
+
+.wa{position:fixed;right:max(18px,calc(50% - 240px + 18px));bottom:calc(94px + env(safe-area-inset-bottom,0px));z-index:25;width:46px;height:46px;border-radius:16px;background:var(--wa);display:grid;place-items:center;box-shadow:0 10px 24px -8px rgba(20,140,70,.6)}
+.wa svg{width:24px;height:24px}
+
+/* Шторка товара */
+.sheet-bg{position:fixed;inset:0;background:rgba(25,12,40,.5);z-index:40;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--bg);width:100%;max-width:480px;max-height:94%;border-radius:30px 30px 0 0;overflow-y:auto;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));animation:up .26s cubic-bezier(.2,.8,.2,1)}
+@keyframes up{from{transform:translateY(60px);opacity:.5}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.sheet{animation:none}}
+.sheet .ph{position:relative;display:grid;place-items:center;padding:30px 10px 6px;border-radius:30px 30px 0 0}
+.sheet .ph svg{width:92%;height:auto;max-width:380px}
+.sheet .close{position:absolute;top:14px;right:14px}
+.sheet .grab{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:42px;height:4px;border-radius:2px;background:var(--fg);opacity:.15}
+.sheet .in{padding:18px 18px 4px;display:flex;flex-direction:column;gap:16px}
+.sheet h2{font-family:var(--display);margin:0;font-size:22px;line-height:1.15;font-weight:700;text-wrap:balance}
+.sheet p{margin:0;color:var(--muted)}
+.label{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px}
+.opt{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:11px 12px;text-align:left;display:flex;flex-direction:column;gap:2px}
+.opt span{font-size:12px;color:var(--muted)}
+.opt b{font-family:var(--display);font-weight:600;font-size:14px;font-variant-numeric:tabular-nums}
+.opt[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.fact{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:9px 10px;font-size:11.5px;color:var(--muted)}
+.fact b{display:block;color:var(--fg);font-size:13px}
+.note{background:var(--accent-soft);border-radius:14px;padding:11px 13px;font-size:13px;display:flex;gap:9px;align-items:flex-start}
+.note svg{width:18px;height:18px;flex:none;color:var(--accent);margin-top:1px}
+.buybar{display:flex;gap:10px;align-items:center;position:sticky;bottom:0;background:var(--bg);padding-block:10px 4px}
+.qty{display:flex;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:16px;height:54px}
+.qty button{width:44px;height:100%;font-size:20px;font-weight:600}
+.qty span{min-width:22px;text-align:center;font-weight:700;font-variant-numeric:tabular-nums}
+.btn{height:54px;border-radius:16px;background:var(--accent);color:var(--accent-ink);font-weight:700;padding:0 18px;display:flex;align-items:center;justify-content:center;gap:8px;flex:1;box-shadow:0 10px 22px -10px var(--accent);text-decoration:none}
+.btn.ghost{background:var(--card);color:var(--fg);box-shadow:var(--shadow-s)}
+.btn.wa-btn{background:var(--wa);color:#07361b;box-shadow:none}
+
+/* Корзина */
+.lines{display:flex;flex-direction:column;gap:10px}
+.line{display:grid;grid-template-columns:76px minmax(0,1fr) auto;gap:12px;align-items:center;background:var(--card);border-radius:20px;padding:8px 12px 8px 8px;box-shadow:var(--shadow-s)}
+.line .th{width:76px;height:76px;border-radius:16px;display:grid;place-items:center;overflow:hidden}
+.line .th svg{width:100%;height:auto}
+.line .nm{font-weight:600;font-size:14px}
+.line .var{font-size:12px;color:var(--muted)}
+.line .qty{height:34px;border-radius:11px;margin-top:6px;width:max-content;background:var(--soft);border:0}
+.line .qty button{width:32px;font-size:17px}
+.sum{background:var(--card);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:9px;font-variant-numeric:tabular-nums;box-shadow:var(--shadow-s)}
+.sum div{display:flex;justify-content:space-between;gap:10px}
+.sum .tot{font-family:var(--display);font-size:17px;font-weight:700;padding-top:10px;border-top:1px dashed var(--line)}
+.sum .disc{color:var(--ok)}
+.empty{text-align:center;padding:20px 10px;display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--muted)}
+.empty .pic{width:200px}
+.empty h2{font-family:var(--display);color:var(--fg);margin:6px 0 0;font-size:18px;font-weight:600}
+.empty p{margin:0 0 6px}
+
+/* Формы */
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--soft);border-radius:16px;padding:4px}
+.seg button{height:44px;border-radius:12px;font-weight:600;font-size:14px;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--card);box-shadow:var(--shadow-s);color:var(--plum)}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:13px;font-weight:600}
+.field input,.field textarea{height:50px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);padding:0 14px;width:100%;outline:none}
+.field input:focus,.field textarea:focus{border-color:var(--accent)}
+.field textarea{height:80px;padding:12px 14px;resize:none}
+.field .hint{font-size:12px;color:var(--muted)}
+.field.err input{border-color:var(--warn)}
+.field .msg{font-size:12px;color:var(--warn)}
+.radio-list{display:flex;flex-direction:column;gap:8px}
+.radio{display:flex;gap:12px;align-items:center;background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:12px 14px;text-align:left;width:100%}
+.radio[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.radio .dot{width:20px;height:20px;border-radius:50%;border:2px solid var(--line);flex:none;display:grid;place-items:center}
+.radio[aria-pressed="true"] .dot{border-color:var(--accent)}
+.radio[aria-pressed="true"] .dot::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.radio .t{flex:1;min-width:0}
+.radio .t b{display:block;font-size:14px}
+.radio .t span{font-size:12px;color:var(--muted)}
+.slots{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin-inline:-16px;padding-inline:16px}
+.slots::-webkit-scrollbar{display:none}
+.slot{flex:none;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:8px 13px;font-size:13px;font-weight:600;text-align:center;font-variant-numeric:tabular-nums}
+.slot span{display:block;font-size:11px;color:var(--muted);font-weight:500}
+.slot[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;background:var(--card);border-radius:16px;padding:12px 14px;box-shadow:var(--shadow-s)}
+.check input{width:20px;height:20px;accent-color:var(--accent);flex:none;margin-top:1px}
+
+/* Бонусы */
+.loyal{border-radius:26px;padding:20px;color:#fff;background:radial-gradient(120% 140% at 100% 0%,#b48ae6 0%,#7a45b8 45%,#4a2373 100%);display:flex;flex-direction:column;gap:14px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.loyal::after{content:"TIKA CAKE";position:absolute;right:-6px;bottom:-12px;font-family:var(--display);font-weight:700;font-size:38px;opacity:.09;letter-spacing:.02em;white-space:nowrap}
+.loyal .lv{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.loyal .pct{font-family:var(--display);font-size:44px;font-weight:700;line-height:1}
+.loyal .bar{height:8px;background:rgba(255,255,255,.25);border-radius:4px;overflow:hidden}
+.loyal .bar i{display:block;height:100%;background:#fff;border-radius:4px}
+.loyal small{opacity:.9;font-size:12px}
+.levels{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.level{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:12px 10px;display:flex;flex-direction:column;gap:2px;font-size:11.5px;color:var(--muted)}
+.level b{font-family:var(--display);font-size:19px;font-weight:600;color:var(--fg)}
+.level.cur{border-color:var(--accent);background:var(--accent-soft)}
+.hist{background:var(--card);border-radius:20px;padding:4px 16px;box-shadow:var(--shadow-s)}
+.hist div{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;padding:12px 0;border-bottom:1px solid var(--line);font-size:14px}
+.hist div:last-child{border-bottom:0}
+.hist span{color:var(--muted);font-size:12px;grid-column:1/-1}
+.hist b{font-variant-numeric:tabular-nums;text-align:right}
+
+/* Филиалы */
+.contact{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.contact a,.contact button{border-radius:20px;padding:14px;background:var(--card);box-shadow:var(--shadow-s);display:flex;flex-direction:column;gap:3px;text-decoration:none;color:var(--fg);text-align:left}
+.contact span{font-size:12px;color:var(--muted)}
+.contact b{font-size:14px;word-break:break-word}
+.contact .wa-c{background:var(--wa);color:#07361b}.contact .wa-c span{color:#0b4a26}
+.branches{display:flex;flex-direction:column;gap:10px}
+.branch{background:var(--card);border-radius:20px;padding:14px;display:grid;grid-template-columns:40px minmax(0,1fr);gap:4px 12px;box-shadow:var(--shadow-s)}
+.branch .ic{grid-row:span 3;width:40px;height:40px;border-radius:13px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center}
+.branch .ic svg{width:20px;height:20px}
+.branch .a{font-weight:700}
+.branch .d{font-size:12px;color:var(--muted)}
+.branch .acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.pill{font-size:13px;font-weight:600;padding:8px 12px;border-radius:11px;background:var(--soft);text-decoration:none;color:var(--fg)}
+.pill.acc{background:var(--accent-soft);color:var(--accent)}
+
+.done{text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px;padding-top:16px}
+.done .ok{width:88px;height:88px;border-radius:30px;background:var(--accent-soft);display:grid;place-items:center;color:var(--accent)}
+.done .ok svg{width:44px;height:44px}
+.done h2{font-family:var(--display);margin:0;font-size:20px;font-weight:700}
+.done p{margin:0;color:var(--muted);max-width:34ch}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(160px + env(safe-area-inset-bottom,0px));z-index:60;background:var(--fg);color:var(--bg);padding:11px 16px;border-radius:14px;font-size:14px;font-weight:600;box-shadow:var(--shadow);max-width:calc(100% - 32px)}
+.perks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.perk{display:flex;flex-direction:column;gap:2px;font-size:11.5px;color:var(--muted);padding:12px 10px;border-radius:18px;background:var(--card);box-shadow:var(--shadow-s)}
+.perk b{font-family:var(--display);font-size:14px;font-weight:600;color:var(--fg)}
+.foot{font-size:12px;color:var(--muted);text-align:center;margin:0}
+.found{font-size:13px;color:var(--muted)}
+.stepper{display:flex;gap:6px}
+.stepper i{flex:1;height:4px;border-radius:2px;background:var(--line)}
+.stepper i.on{background:var(--accent)}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <header class="top" id="top"></header>
+  <main id="view"></main>
+</div>
+<a class="wa" href="https://wa.me/77750781778" target="_blank" rel="noopener" aria-label="Написать в WhatsApp">
+  <svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2c0 1.3.9 2.5 1 2.7.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.6-.3Z"/></svg>
+</a>
+<nav class="nav" id="nav" aria-label="Разделы"></nav>
+<div id="layer"></div>
+
+<script>
+// ===== Данные (ассортимент и цены с tikacake.kz) =====
+const CATS=[{id:"cakes",n:"Торты"},{id:"pies",n:"Пироги"},{id:"sets",n:"Сеты"},{id:"bake",n:"Выпечка"},{id:"semi",n:"Полуфабрикаты"},{id:"tea",n:"К чаю"}];
+// a — параметры иллюстрации: side/top — покрытие, sp/cr/jam — слои в разрезе, drip — подтёки, dec — декор сверху, naked — открытые коржи
+const P=[
+ {id:1,c:"cakes",n:"TikaCake",tag:"Фирменный",t:"pink",d:"Миндальные коржи, воздушная меренга, сливочный крем и малиновый конфитюр.",v:[["0,5 кг",3500],["1 кг",7000]],hit:1,
+  a:{shape:"cake",side:"#fbeef2",top:"#fff9fb",sp:"#e8c99a",cr:"#fffaf3",jam:"#c8264f",dec:["kiss","berry","kiss","berry","kiss","berry"],crumb:"#f2c7d3"}},
+ {id:2,c:"cakes",n:"Дамские пальчики",t:"cream",d:"Нежные заварные пальчики со сливочно-сметанным кремом.",v:[["1 кг",4000]],
+  a:{shape:"cake",side:"#fff6e8",top:"#fffaf2",sp:"#efcf96",cr:"#fffaf0",jam:"#f3dcb0",dec:["eclair","eclair","eclair","eclair"],powder:1}},
+ {id:3,c:"cakes",n:"Карамельный наполеон",t:"peach",d:"Хрустящие слоёные коржи и заварной крем с солёной карамелью.",v:[["1 кг",4500]],hit:1,
+  a:{shape:"slab",sp:"#deac63",cr:"#f6e6c6",top:"#e7c088",drizzle:"#a85d1c"}},
+ {id:4,c:"cakes",n:"Кит Кат",t:"choc",d:"Шоколадный бисквит и шоколадный крем, по бокам — батончики KitKat.",v:[["1,5 кг",9500]],
+  a:{shape:"cake",side:"#6b4330",top:"#4a2a1c",sp:"#5a3424",cr:"#c79a77",jam:"#3a2016",dec:["candy2","candy3","candy1","candy2","candy3","candy1","candy2"],sideDec:"kitkat"}},
+ {id:5,c:"cakes",n:"Королевский",t:"choc",d:"Бисквит с орехами и черносливом, сметанный крем, шоколадная глазурь.",v:[["1 кг",6000],["1,5 кг",9000]],
+  a:{shape:"cake",side:"#f1e2cc",top:"#3d2318",drip:"#3d2318",sp:"#8a5a3b",cr:"#f6ead8",jam:"#4a2c1d",dec:["nut","nut","rose","nut","nut"],roseCol:"#f6ead8"}},
+ {id:6,c:"cakes",n:"Лавандовый",tag:"Новинка",t:"lilac",d:"Ванильный бисквит, крем с лавандой и черничный конфитюр.",v:[["1 кг",5500],["1,5 кг",9000]],hit:1,
+  a:{shape:"cake",side:"#e6d8f6",top:"#f4edfc",sp:"#f2e1c2",cr:"#e3d1f6",jam:"#4b3a8c",dec:["lav","blue","blue","lav","blue","lav"],crumb:"#cdb6ee"}},
+ {id:7,c:"cakes",n:"Медовый",t:"peach",d:"Классический медовик: тонкие медовые коржи и сметанный крем.",v:[["1,5 кг",7500]],
+  a:{shape:"slab",sp:"#c98a3a",cr:"#f5e3c0",top:"#d7a35a",honey:1}},
+ {id:8,c:"cakes",n:"Мишка на севере",t:"lilac",d:"Шоколадный бисквит, сливочный крем, шоколадные конфеты в декоре.",v:[["1 кг",6000],["1,5 кг",9000]],
+  a:{shape:"cake",side:"#fdfaf6",top:"#ffffff",sp:"#4e3226",cr:"#fbf5ec",jam:"#4e3226",dec:["wrap","rose","wrap","rose","wrap"],roseCol:"#ffffff",crumb:"#5a3a2a"}},
+ {id:9,c:"cakes",n:"Молочная девочка",t:"pink",d:"Тонкие сгущёночные коржи и лёгкий сливочный крем.",v:[["1 кг",6000],["1,5 кг",8500]],hit:1,
+  a:{shape:"cake",naked:1,side:"#f3dcb0",top:"#fffdf8",sp:"#efd29f",cr:"#fffaf0",jam:"#fffaf0",dec:["straw","straw","rose","straw","straw"],roseCol:"#fffaf3"}},
+ {id:10,c:"cakes",n:"Наполеон",t:"cream",d:"Слоёные коржи и классический заварной крем.",v:[["1,5 кг",7500]],
+  a:{shape:"slab",sp:"#e3bd7c",cr:"#fbf1dc",top:"#efd3a0"}},
+ {id:11,c:"cakes",n:"Пломбир шоколадный",t:"choc",d:"Шоколадный бисквит и крем-пломбир, шоколадный ганаш.",v:[["1 кг",6500],["1,5 кг",9500]],
+  a:{shape:"cake",side:"#fbf5ec",top:"#2f1a12",drip:"#2f1a12",sp:"#5a3626",cr:"#fbf5ec",jam:"#3b2219",dec:["rose","choc","rose","choc","rose"],roseCol:"#fffaf2"}},
+ {id:12,c:"cakes",n:"Притяжение",t:"pink",d:"Шоколадно-вишнёвый торт с кремом на маскарпоне.",v:[["1 кг",5000]],
+  a:{shape:"cake",side:"#4a2a22",top:"#8e1630",drip:"#8e1630",sp:"#4a2a22",cr:"#f2d6dc",jam:"#a3182f",dec:["cherry","cherry","cherry","cherry"]}},
+ {id:13,c:"cakes",n:"Рафаэлло",t:"cream",d:"Белый бисквит, кокосовый крем, миндаль и кокосовая стружка.",v:[["1,5 кг",9900]],hit:1,
+  a:{shape:"cake",side:"#fbf7f0",top:"#fffdf9",sp:"#f6efe3",cr:"#ffffff",jam:"#efe3c9",dec:["ball","ball","ball","ball","ball","ball"],flakes:1}},
+ {id:14,c:"cakes",n:"Сникерс",t:"choc",d:"Шоколадный бисквит, арахис, карамель и нуга.",v:[["1 кг",8000],["1,5 кг",12000]],hit:1,
+  a:{shape:"cake",side:"#5b3a29",top:"#c47a2c",drip:"#c47a2c",sp:"#5b3a29",cr:"#d8b48a",jam:"#c47a2c",dec:["peanut","choc","peanut","peanut","choc","peanut"]}},
+ {id:15,c:"cakes",n:"Фисташка-малина",tag:"Хит",t:"mint",d:"Фисташковый бисквит, малиновый конфитюр и крем с пастой фисташки.",v:[["1 кг",11000],["1,5 кг",14000]],hit:1,
+  a:{shape:"cake",side:"#dbe6bd",top:"#f1f5e2",sp:"#b5c77a",cr:"#f6f3e2",jam:"#c8264f",dec:["berry","rose","berry","rose","berry","rose"],roseCol:"#f7f5e8",pist:1,crumb:"#9fb85c"}},
+ {id:16,c:"cakes",n:"Шокобан",t:"peach",d:"Шоколадно-банановый торт с карамелью.",v:[["1 кг",6000]],
+  a:{shape:"cake",side:"#5a3626",top:"#3b2219",drip:"#3b2219",sp:"#5a3626",cr:"#f4e08a",jam:"#c47a2c",dec:["banana","banana","banana","banana","banana"]}},
+ {id:20,c:"pies",n:"Банофи-пай",t:"cream",d:"Песочная основа, банан, варёная сгущёнка и взбитые сливки.",v:[["1 шт",5500]],hit:1,
+  a:{shape:"pie",crust:"#d59a52",fill:"#fbf3e3",kind:"banoffee"}},
+ {id:21,c:"pies",n:"Восточный пирог",t:"peach",d:"Рассыпчатое тесто с орехами и мёдом.",v:[["1 шт",3200]],
+  a:{shape:"pie",crust:"#cf9449",fill:"#b9732f",kind:"lattice"}},
+ {id:30,c:"sets",n:"Сет мини-пирожных",tag:"Пример",t:"lilac",d:"Ассорти из 12 мини-пирожных для офиса и праздника. Позиция-пример для прототипа.",v:[["12 шт",6500]],a:{shape:"set"}},
+ {id:31,c:"sets",n:"Сет к дастархану",tag:"Пример",t:"peach",d:"Баурсаки, бореки и восточный пирог в одной коробке. Позиция-пример для прототипа.",v:[["на 6–8 персон",7900]],a:{shape:"set",savory:1}},
+ {id:40,c:"bake",n:"Баурсаки",t:"peach",d:"Пышные баурсаки по домашнему рецепту.",v:[["1 кг",1800]],hit:1,a:{shape:"baursak"}},
+ {id:41,c:"bake",n:"Бореки",t:"cream",d:"Хрустящие бореки с начинкой.",v:[["1 шт",350]],a:{shape:"borek"}},
+ {id:42,c:"bake",n:"Булочки фуршетные",t:"peach",d:"Мини-булочки для фуршета и кофе-брейка.",v:[["1 уп.",2200]],a:{shape:"buns"}},
+ {id:50,c:"semi",n:"Вареники",t:"lilac",d:"Замороженные вареники ручной лепки.",v:[["с картофелем",2500],["с творогом",2800]],a:{shape:"dump"}},
+ {id:60,c:"tea",n:"Вафли весовые",t:"cream",d:"Хрустящие вафли с кремовой прослойкой.",v:[["1 кг",4200]],a:{shape:"waffle"}},
+ {id:61,c:"tea",n:"Батончики",t:"peach",d:"Злаковые батончики к чаю.",v:[["1 шт",300]],a:{shape:"bar"}}
+];
+const BRANCHES=[["ул. Акмешит, 9/2",""],["пр. Мангилик Ел, 36",""],["пр. Туран, 55/13",""],["ул. Жошы хан, 1",""],
+ ["ул. С. Асфендиярова, 4",""],["ул. Алматы, 13","ЖК Отандастар"],["ул. Е-36, 9/2","ЖК Республика"],["ул. Кошкарбаева, 54/1",""]];
+const PHONE="+7 (775) 078 17 78";
+const USER={name:"Айгерим",spent:42000}; // демо-клиент
+const LEVELS=[{p:3,from:0},{p:5,from:30000},{p:7,from:100000}];
+const CAT_ART={cakes:1,pies:20,sets:30,bake:40,semi:50,tea:60};
+
+// ===== Состояние =====
+const store={get(k,d){try{const v=localStorage.getItem("tc2_"+k);return v?JSON.parse(v):d}catch(e){return d}},
+  set(k,v){try{localStorage.setItem("tc2_"+k,JSON.stringify(v))}catch(e){}}};
+let S={tab:"home",cat:"cakes",q:"",cart:store.get("cart",[]),orders:store.get("orders",[]),screen:null,
+  co:{mode:"pickup",branch:0,day:0,slot:2,name:"",phone:"",addr:"",bday:false,pay:"kaspi",comment:"",inscr:""}};
+const fmt=n=>n.toLocaleString("ru-RU").replace(/\s/g," ")+" ₸";
+const byId=id=>P.find(p=>p.id===id);
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function save(){store.set("cart",S.cart);store.set("orders",S.orders)}
+function level(sum){let l=LEVELS[0];LEVELS.forEach(x=>{if(sum>=x.from)l=x});return l}
+
+// ===== Иллюстрации (векторная «предметная съёмка») =====
+let GID=0;
+function shade(hex,amt){ // amt>0 — светлее, <0 — темнее
+  const n=parseInt(hex.slice(1),16);let r=n>>16,g=n>>8&255,b=n&255;
+  const t=amt<0?0:255,k=Math.abs(amt);r=Math.round(r+(t-r)*k);g=Math.round(g+(t-g)*k);b=Math.round(b+(t-b)*k);
+  return "#"+((1<<24)|(r<<16)|(g<<8)|b).toString(16).slice(1);
+}
+function rnd(seed){let s=Math.abs(Math.round(seed))%2147483647||7;return()=>(s=s*16807%2147483647)/2147483647}
+const f1=n=>Math.round(n*10)/10;
+
+// Общие градиенты: объём цилиндра, блик, тарелка, тень
+function defs(u){return `<defs>
+ <linearGradient id="${u}cyl" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".22"/><stop offset=".22" stop-color="#fff" stop-opacity=".16"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".28"/></linearGradient>
+ <radialGradient id="${u}hl" cx=".38" cy=".3" r=".75"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".6" stop-color="#fff" stop-opacity="0"/></radialGradient>
+ <radialGradient id="${u}ball" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#fff" stop-opacity=".75"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".25"/></radialGradient>
+ <linearGradient id="${u}plate" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#e7e0ee"/></linearGradient>
+ <radialGradient id="${u}sh" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#3a1f55" stop-opacity=".28"/><stop offset="1" stop-color="#3a1f55" stop-opacity="0"/></radialGradient>
+</defs>`}
+function plate(u,cx=100,cy=146,rx=90,ry=15){return `<ellipse cx="${cx}" cy="${cy+9}" rx="${rx+6}" ry="${ry+4}" fill="url(#${u}sh)"/>
+ <ellipse cx="${cx}" cy="${cy+3}" rx="${rx}" ry="${ry}" fill="#d9cfe4"/><ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="url(#${u}plate)"/>
+ <ellipse cx="${cx}" cy="${cy}" rx="${f1(rx*.78)}" ry="${f1(ry*.7)}" fill="none" stroke="#e4dcec" stroke-width="1.2"/>`}
+
+// Декор сверху торта
+const DEC={
+ berry:(x,y,u)=>`<g><circle cx="${x}" cy="${y}" r="6.2" fill="#b81d45"/>${[[-2.6,-2],[1,-3],[3.2,0],[-3,1.4],[0,1.6],[2.4,3],[-1,4]].map(([a,b])=>`<circle cx="${f1(x+a)}" cy="${f1(y+b)}" r="2.1" fill="#d42f5a"/>`).join("")}<circle cx="${x}" cy="${y}" r="6.2" fill="url(#${u}ball)"/></g>`,
+ blue:(x,y,u)=>`<g><circle cx="${x}" cy="${y}" r="4.6" fill="#38306e"/><circle cx="${x}" cy="${y}" r="4.6" fill="url(#${u}ball)"/><path d="M${f1(x-1.2)} ${f1(y-3.3)}l1.2 1 1.2-1" stroke="#6a5fae" stroke-width=".9" fill="none"/></g>`,
+ kiss:(x,y,u)=>`<g><path d="M${f1(x-7)} ${f1(y+3)}c0-6 5-7 6.5-14 1.5 7 7.5 8 7.5 14z" fill="#fff"/><path d="M${f1(x-7)} ${f1(y+3)}c0-6 5-7 6.5-14 1.5 7 7.5 8 7.5 14z" fill="url(#${u}ball)" opacity=".6"/></g>`,
+ rose:(x,y,u,c)=>{c=c||"#fffaf3";return `<g><ellipse cx="${x}" cy="${f1(y+3)}" rx="9" ry="3.5" fill="#000" opacity=".1"/><circle cx="${x}" cy="${f1(y-2)}" r="8" fill="${c}"/>
+   <path d="M${f1(x-6)} ${f1(y-1)}a6 4.5 0 1 1 12 0M${f1(x-3.5)} ${f1(y-3)}a3.8 3 0 1 1 7.5 .5M${f1(x-1.5)} ${f1(y-5)}a1.8 1.5 0 1 1 3.6 0" stroke="${shade(c,-.16)}" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+   <circle cx="${x}" cy="${f1(y-2)}" r="8" fill="url(#${u}ball)" opacity=".7"/></g>`},
+ choc:(x,y)=>`<g transform="rotate(-18 ${x} ${y})"><path d="M${f1(x-7)} ${f1(y-9)}h13l2 13h-14z" fill="#2c1810"/><path d="M${f1(x-7)} ${f1(y-9)}h13l.6 4h-13z" fill="#5b3a2a"/></g>`,
+ nut:(x,y)=>`<g><ellipse cx="${x}" cy="${y}" rx="6" ry="4.6" fill="#8a5a2b"/><ellipse cx="${f1(x-1.5)}" cy="${f1(y-1.6)}" rx="3" ry="1.6" fill="#c08a4f"/><path d="M${x} ${f1(y-4.4)}v8.8" stroke="#6e431e" stroke-width=".8"/></g>`,
+ peanut:(x,y)=>`<g><path d="M${f1(x-6)} ${y}a3.6 3.6 0 0 1 6-2.6 3.6 3.6 0 1 1 0 5.2A3.6 3.6 0 0 1 ${f1(x-6)} ${y}z" fill="#d9a35f"/><circle cx="${f1(x-3)}" cy="${f1(y-1.2)}" r="1.4" fill="#f0c88e"/></g>`,
+ cherry:(x,y,u)=>`<g><path d="M${x} ${f1(y-5)}q2-9 9-12" stroke="#4f6b2a" stroke-width="1.4" fill="none"/><circle cx="${x}" cy="${y}" r="6" fill="#9b0f2c"/><circle cx="${x}" cy="${y}" r="6" fill="url(#${u}ball)"/></g>`,
+ straw:(x,y,u)=>`<g><path d="M${x} ${f1(y+7)}c-8-3-9-12-5-14 2-1 4 0 5 1 1-1 3-2 5-1 4 2 3 11-5 14z" fill="#e0263f"/>${[[-2,-2],[2,-2],[0,1],[-3,2],[3,2],[0,4]].map(([a,b])=>`<ellipse cx="${f1(x+a)}" cy="${f1(y+b)}" rx=".6" ry=".9" fill="#ffd36b"/>`).join("")}<path d="M${f1(x-4)} ${f1(y-6)}l4 2 4-2-2 3h-4z" fill="#3f8f3a"/><path d="M${x} ${f1(y+7)}c-8-3-9-12-5-14 2-1 4 0 5 1 1-1 3-2 5-1 4 2 3 11-5 14z" fill="url(#${u}ball)" opacity=".6"/></g>`,
+ ball:(x,y,u)=>`<g><circle cx="${x}" cy="${f1(y-3)}" r="7" fill="#fbf6ec"/>${[[-3,-5],[2,-6],[4,-2],[-4,-1],[0,-1],[2,1],[-2,1]].map(([a,b])=>`<rect x="${f1(x+a)}" y="${f1(y+b-3)}" width="2.2" height=".9" rx=".4" fill="#e3d6bf" transform="rotate(${a*20} ${f1(x+a)} ${f1(y+b-3)})"/>`).join("")}<circle cx="${x}" cy="${f1(y-3)}" r="7" fill="url(#${u}ball)"/></g>`,
+ lav:(x,y)=>`<g><path d="M${x} ${f1(y+4)}l3-16" stroke="#6f8f4e" stroke-width="1.2"/>${[0,1,2,3,4].map(i=>`<ellipse cx="${f1(x+3-i*.55)}" cy="${f1(y-11+i*2.6)}" rx="1.9" ry="1.4" fill="${i%2?"#8a66c9":"#a37fdb"}"/>`).join("")}</g>`,
+ eclair:(x,y)=>`<g transform="rotate(-8 ${x} ${y})"><rect x="${f1(x-13)}" y="${f1(y-5)}" width="26" height="9" rx="4.5" fill="#d9a04f"/><rect x="${f1(x-12)}" y="${f1(y-5.5)}" width="24" height="5" rx="2.5" fill="#fffaf0"/></g>`,
+ banana:(x,y)=>`<g><ellipse cx="${x}" cy="${y}" rx="7" ry="4.2" fill="#f6e7a6"/><ellipse cx="${x}" cy="${y}" rx="5" ry="2.8" fill="#fbf2c8"/><ellipse cx="${x}" cy="${y}" rx="1.8" ry="1" fill="#c9b46a"/></g>`,
+ wrap:(x,y)=>`<g><path d="M${f1(x-12)} ${f1(y-5)}l4 4-4 4zM${f1(x+12)} ${f1(y-5)}l-4 4 4 4z" fill="#3e7cc5"/><rect x="${f1(x-8)}" y="${f1(y-5)}" width="16" height="9" rx="2" fill="#3e7cc5"/><rect x="${f1(x-6)}" y="${f1(y-3)}" width="12" height="5" rx="1" fill="#f3f7ff"/><circle cx="${x}" cy="${f1(y-.5)}" r="1.6" fill="#5b3a2a"/></g>`,
+ candy1:(x,y,u)=>`<g><ellipse cx="${x}" cy="${y}" rx="4.4" ry="3" fill="#e2453b"/><ellipse cx="${x}" cy="${y}" rx="4.4" ry="3" fill="url(#${u}ball)"/></g>`,
+ candy2:(x,y,u)=>`<g><ellipse cx="${x}" cy="${y}" rx="4.4" ry="3" fill="#f2c230"/><ellipse cx="${x}" cy="${y}" rx="4.4" ry="3" fill="url(#${u}ball)"/></g>`,
+ candy3:(x,y,u)=>`<g><ellipse cx="${x}" cy="${y}" rx="4.4" ry="3" fill="#3c8de0"/><ellipse cx="${x}" cy="${y}" rx="4.4" ry="3" fill="url(#${u}ball)"/></g>`
+};
+
+// Круглый торт: цилиндр + верх + подтёки + декор
+function cakeSVG(a,u,o={}){
+  const cx=o.cx??100, top=o.top??68, bot=o.bot??128, rx=o.rx??66, ry=o.ry??15;
+  const L=cx-rx,R=cx+rx, R0=rnd(a.side.charCodeAt(2)*97+rx);
+  const ey=x=>top+ry*Math.sqrt(Math.max(0,1-((x-cx)/rx)**2));
+  const by=x=>bot+ry*Math.sqrt(Math.max(0,1-((x-cx)/rx)**2));
+  const body=`M${L} ${top}V${bot}A${rx} ${ry} 0 0 0 ${R} ${bot}V${top}Z`;
+  let s=`<path d="${body}" fill="${a.side}"/>`;
+  if(a.naked){ // открытые коржи
+    const n=6,h=(bot-top)/n;
+    for(let i=0;i<n;i++){const y1=f1(top+i*h),y2=f1(top+(i+1)*h);
+      s+=`<path d="M${L} ${y1}A${rx} ${ry} 0 0 0 ${R} ${y1}V${y2}A${rx} ${ry} 0 0 1 ${L} ${y2}Z" fill="${i%2?a.cr:a.sp}"/>`}
+    s+=`<path d="${body}" fill="${a.cr}" opacity=".3"/>`;
+  }
+  if(a.sideDec==="kitkat"){
+    for(let x=L+1;x<R-2;x+=8.2){const yb=by(x+3.7);
+      s+=`<rect x="${f1(x)}" y="${top-9}" width="7.4" height="${f1(yb-top+9)}" rx="2.2" fill="#7a4a2c"/><rect x="${f1(x+1.2)}" y="${top-7}" width="2" height="${f1(yb-top+4)}" rx="1" fill="#9a6440"/>`}
+  }
+  if(a.drip){
+    const N=12,w=(R-L)/N,lens=[9,19,7,24,13,6,17,10,22,8,15,11];
+    let d=`M${L} ${top}L${L} ${f1(ey(L)+3)}`;
+    for(let i=0;i<N;i++){const x1=L+(i+1)*w,m=L+i*w+w/2,bm=ey(m)+3,l=lens[i]*(bot-top)/60;
+      d+=`L${f1(m-3.4)} ${f1(bm)}L${f1(m-3.4)} ${f1(bm+l)}A3.4 3.4 0 0 0 ${f1(m+3.4)} ${f1(bm+l)}L${f1(m+3.4)} ${f1(bm)}L${f1(x1)} ${f1(ey(x1)+3)}`}
+    d+=`L${R} ${top}A${rx} ${ry} 0 0 1 ${L} ${top}Z`;
+    s+=`<path d="${d}" fill="${a.drip}"/>`;
+  }
+  if(a.flakes||a.crumb){ // кокосовая стружка по бокам или крошка по низу
+    const col=a.flakes?"#efe6d6":a.crumb;
+    for(let i=0;i<(a.flakes?90:46);i++){const x=L+3+R0()*(R-L-6),yb=by(x);
+      const y=a.flakes?top+8+R0()*(yb-top-10):yb-2-R0()*9;
+      s+=`<rect x="${f1(x)}" y="${f1(y)}" width="${a.flakes?2.6:1.8}" height="${a.flakes?1:1.8}" rx=".6" fill="${col}" transform="rotate(${Math.round(R0()*180)} ${f1(x)} ${f1(y)})"/>`}
+  }
+  s+=`<path d="${body}" fill="url(#${u}cyl)"/>`;
+  s+=`<ellipse cx="${cx}" cy="${top}" rx="${rx}" ry="${ry}" fill="${a.drip||a.top}"/>`;
+  if(a.drip&&a.top!==a.drip)s+=`<ellipse cx="${cx}" cy="${top}" rx="${rx-6}" ry="${ry-3}" fill="${a.top}"/>`;
+  s+=`<ellipse cx="${cx}" cy="${top}" rx="${rx}" ry="${ry}" fill="url(#${u}hl)"/>`;
+  if(a.pist){for(let i=0;i<40;i++){const t=R0()*Math.PI*2,r=Math.sqrt(R0())*.55;s+=`<circle cx="${f1(cx+Math.cos(t)*rx*r)}" cy="${f1(top+Math.sin(t)*ry*r)}" r="${f1(.8+R0()*1.2)}" fill="${R0()>.5?"#8fae4a":"#b9d07a"}"/>`}}
+  if(a.powder){for(let i=0;i<50;i++){const t=R0()*Math.PI*2,r=Math.sqrt(R0())*.9;s+=`<circle cx="${f1(cx+Math.cos(t)*rx*r)}" cy="${f1(top+Math.sin(t)*ry*r)}" r=".9" fill="#fff"/>`}}
+  // декор по кругу, задний ряд рисуется первым
+  const dec=a.dec||[],n=dec.length;
+  dec.map((d,i)=>{const t=-Math.PI/2+i*2*Math.PI/n+.3;return{d,x:f1(cx+Math.cos(t)*rx*.68),y:f1(top+Math.sin(t)*ry*.62)}})
+     .sort((p,q)=>p.y-q.y).forEach(p=>{s+=DEC[p.d](p.x,p.y,u,a.roseCol)});
+  return s;
+}
+// Кусочек торта в разрезе
+function sliceSVG(a,u,x0,y0,w,h){
+  const layers=a.naked?[a.sp,a.cr,a.sp,a.cr,a.sp,a.cr,a.sp]:[a.sp,a.cr,a.sp,a.jam,a.sp,a.cr,a.sp];
+  const hs=[.17,.1,.17,.08,.17,.1,.21];let y=y0,s="";
+  layers.forEach((c,i)=>{const hh=h*hs[i];s+=`<rect x="${x0}" y="${f1(y)}" width="${w}" height="${f1(hh+.4)}" fill="${c}"/>`;y+=hh});
+  const R0=rnd(x0*13+w);for(let i=0;i<34;i++)s+=`<circle cx="${f1(x0+2+R0()*(w-4))}" cy="${f1(y0+2+R0()*(h-4))}" r="${f1(.4+R0()*.7)}" fill="#000" opacity=".08"/>`;
+  const sideC=a.side;
+  s+=`<path d="M${x0+w} ${y0}L${f1(x0+w*.55)} ${y0-18}V${y0+h-18}L${x0+w} ${y0+h}z" fill="${shade(sideC,-.12)}"/>`;
+  s+=`<path d="M${x0} ${y0}L${f1(x0+w*.55)} ${y0-18}L${x0+w} ${y0}z" fill="${a.drip||a.top}"/><path d="M${x0} ${y0}L${f1(x0+w*.55)} ${y0-18}L${x0+w} ${y0}z" fill="url(#${u}hl)"/>`;
+  if(a.drip)s+=`<rect x="${x0}" y="${y0}" width="${w}" height="5" fill="${a.drip}"/><path d="M${x0+w} ${y0}L${f1(x0+w*.55)} ${y0-18}v5L${x0+w} ${y0+5}z" fill="${shade(a.drip,-.1)}"/>`;
+  else s+=`<rect x="${x0}" y="${y0}" width="${w}" height="3" fill="${a.side}"/>`;
+  const d=(a.dec||[])[1]||(a.dec||[])[0];
+  if(d)s+=DEC[d](f1(x0+w*.5),f1(y0-7),u,a.roseCol);
+  return s;
+}
+// Пласт: наполеон, медовик
+function slabSVG(a,u){
+  const x0=36,y0=80,w=104,h=52,dx=26,dy=-22,R0=rnd(a.sp.charCodeAt(3)*31+w);
+  let s="";const n=9,hh=h/n;
+  for(let i=0;i<n;i++)s+=`<rect x="${x0}" y="${f1(y0+i*hh)}" width="${w}" height="${f1(hh+.4)}" fill="${i%2?a.cr:a.sp}"/>`;
+  for(let i=0;i<n;i++)s+=`<path d="M${x0+w} ${f1(y0+i*hh)}l${dx} ${dy}v${f1(hh+.4)}l${-dx} ${-dy}z" fill="${shade(i%2?a.cr:a.sp,-.14)}"/>`;
+  s+=`<path d="M${x0} ${y0}l${dx} ${dy}h${w}l${-dx} ${-dy}z" fill="${a.top}"/>`;
+  for(let i=0;i<170;i++){const t=R0(),q=R0();s+=`<circle cx="${f1(x0+t*w+q*dx)}" cy="${f1(y0+q*dy)}" r="${f1(.6+R0()*1.4)}" fill="${shade(a.top,R0()>.5?.2:-.16)}"/>`}
+  if(a.drizzle){let d=`M${x0+12} ${y0-4}`;for(let i=0;i<7;i++)d+=`q7 -14 14 -2`;s+=`<path d="${d}" stroke="${a.drizzle}" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".9"/>`}
+  if(a.honey)s+=`<g transform="translate(${x0+w*.55} ${y0-11})"><path d="M0-7l6 3.5v7L0 7l-6-3.5v-7z" fill="#f3b33d" stroke="#c98a20"/><path d="M0-3l3 1.8v3.6L0 4l-3-1.8v-3.6z" fill="#f8cf6e"/></g>`;
+  s+=`<path d="M${x0} ${y0}h${w}v${h}h-${w}z" fill="url(#${u}cyl)" opacity=".35"/>`;
+  return s;
+}
+function pieSVG(a,u){
+  const cx=100,cy=100,rx=74,ry=26,R0=rnd(91);
+  let s=`<ellipse cx="${cx}" cy="${cy+12}" rx="${rx}" ry="${ry}" fill="${shade(a.crust,-.2)}"/><rect x="${cx-rx}" y="${cy}" width="${rx*2}" height="12" fill="${shade(a.crust,-.1)}"/>`;
+  for(let i=0;i<36;i++){const t=i/36*Math.PI*2;s+=`<circle cx="${f1(cx+Math.cos(t)*rx*.97)}" cy="${f1(cy+Math.sin(t)*ry*.97)}" r="6.5" fill="${i%2?a.crust:shade(a.crust,.08)}"/>`}
+  s+=`<ellipse cx="${cx}" cy="${cy}" rx="${rx-8}" ry="${ry-5}" fill="${a.fill}"/>`;
+  if(a.kind==="banoffee"){
+    s+=`<ellipse cx="${cx}" cy="${cy}" rx="${rx-8}" ry="${ry-5}" fill="#c98a45" opacity=".15"/>`;
+    [[-40,0],[-22,-10],[-2,-13],[18,-10],[38,-2],[-28,9],[-6,6],[16,8],[34,10]].sort((p,q)=>p[1]-q[1])
+      .forEach(([x,y],i)=>{s+=i%2?DEC.banana(cx+x,cy+y):DEC.rose(cx+x,cy+y+2,u,"#fffaf2")});
+    for(let i=0;i<30;i++)s+=`<circle cx="${f1(cx-50+R0()*100)}" cy="${f1(cy-14+R0()*28)}" r=".9" fill="#5a3626"/>`;
+  }else{
+    let lat="";for(let i=-4;i<=4;i++)lat+=`<path d="M${cx+i*18-10} ${cy-22}l20 44" stroke="${shade(a.crust,.12)}" stroke-width="6" stroke-linecap="round"/><path d="M${cx+i*18+10} ${cy-22}l-20 44" stroke="${a.crust}" stroke-width="6" stroke-linecap="round"/>`;
+    s+=`<clipPath id="${u}pc"><ellipse cx="${cx}" cy="${cy}" rx="${rx-8}" ry="${ry-5}"/></clipPath><g clip-path="url(#${u}pc)">${lat}</g>`;
+    [[-30,-6],[0,-4],[28,2],[-12,8],[14,-12]].forEach(([x,y])=>s+=DEC.nut(cx+x,cy+y));
+  }
+  s+=`<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="url(#${u}hl)" opacity=".5"/>`;
+  return s;
+}
+function bunsSVG(a,u,kind){
+  let s="";
+  const pos=kind==="baursak"?[[62,110],[100,116],[138,110],[80,92],[120,92],[100,74]]:[[64,112],[104,118],[142,110],[84,92],[124,90]];
+  pos.forEach(([x,y],i)=>{
+    if(kind==="baursak"){const r=(i%3-1)*12;s+=`<g transform="rotate(${r} ${x} ${y})"><rect x="${x-21}" y="${y-17}" width="42" height="34" rx="14" fill="#c9852f"/><rect x="${x-21}" y="${y-17}" width="42" height="34" rx="14" fill="url(#${u}ball)"/><path d="M${x-12} ${y-4}q12-8 24 0" stroke="#e8b46a" stroke-width="2" fill="none" opacity=".7"/></g>`}
+    else{s+=`<ellipse cx="${x}" cy="${y}" rx="22" ry="17" fill="#c7782b"/><ellipse cx="${x}" cy="${y-2}" rx="21" ry="15" fill="#d98f3d"/><ellipse cx="${x}" cy="${y-2}" rx="21" ry="15" fill="url(#${u}ball)"/>`;
+      const R0=rnd(x*7+y);for(let j=0;j<10;j++){const sx=f1(x-12+R0()*24),sy=f1(y-12+R0()*12);s+=`<ellipse cx="${sx}" cy="${sy}" rx="1.2" ry=".7" fill="#fff4d8" transform="rotate(${Math.round(R0()*180)} ${sx} ${sy})"/>`}}
+  });
+  return s;
+}
+function borekSVG(a,u){
+  let s="";[[70,112],[130,112],[100,88]].forEach(([x,y])=>{
+    s+=`<circle cx="${x}" cy="${y}" r="27" fill="#c98635"/><circle cx="${x}" cy="${y}" r="25" fill="#e0a858"/>`;
+    let d=`M${x} ${y}`;for(let t=0;t<15.6;t+=.4){const r=1.6*t;d+=`L${f1(x+Math.cos(t)*r)} ${f1(y+Math.sin(t)*r*.92)}`}
+    s+=`<path d="${d}" stroke="#b4702a" stroke-width="2.2" fill="none" stroke-linecap="round"/><circle cx="${x}" cy="${y}" r="25" fill="url(#${u}ball)"/>`;
+    const R0=rnd(x+y);for(let j=0;j<10;j++)s+=`<circle cx="${f1(x-16+R0()*32)}" cy="${f1(y-16+R0()*32)}" r=".9" fill="#2a1b10"/>`});
+  return s;
+}
+function dumpSVG(a,u){
+  let s=`<ellipse cx="150" cy="96" rx="22" ry="8" fill="#e9e2ef"/><ellipse cx="150" cy="94" rx="18" ry="6" fill="#fffdf8"/>`;
+  [[58,118],[100,124],[80,98],[118,102],[46,96],[142,126]].sort((p,q)=>p[1]-q[1]).forEach(([x,y],i)=>{
+    const sh=`M${x-24} ${y}a24 17 0 0 1 48 0q0 5-24 5t-24-5z`;
+    s+=`<g transform="rotate(${(i%3-1)*14} ${x} ${y})"><path d="${sh}" fill="#f7efdc"/><path d="${sh}" fill="url(#${u}ball)"/>
+    <path d="M${x-22} ${y-4}${[0,1,2,3,4,5,6].map(j=>`q3.2 -${j%2?3:1} 6.4 0`).join("")}" stroke="#e2d4b4" stroke-width="1.4" fill="none"/></g>`});
+  return s;
+}
+function waffleSVG(a,u){
+  let s="";[0,1,2].forEach(i=>{const x=40+i*8,y=118-i*20,w=110,h=16,dx=18,dy=-12;
+    s+=`<path d="M${x} ${y}h${w}v${h}h-${w}z" fill="#d79a3f"/><rect x="${x}" y="${y+6}" width="${w}" height="4" fill="#f6e2b5"/>
+    <path d="M${x+w} ${y}l${dx} ${dy}v${h}l${-dx} ${-dy}z" fill="#b97a2c"/><path d="M${x} ${y}l${dx} ${dy}h${w}l${-dx} ${-dy}z" fill="#e9b45c"/>`;
+    for(let j=1;j<9;j++)s+=`<path d="M${f1(x+j*w/9)} ${y}l${dx} ${dy}" stroke="#c98a36" stroke-width="1.2"/>`;
+    for(let j=1;j<4;j++)s+=`<path d="M${f1(x+dx*j/4)} ${f1(y+dy*j/4)}h${w}" stroke="#c98a36" stroke-width="1.2"/>`});
+  return s;
+}
+function barSVG(a,u){
+  let s="";[[50,112,-4],[62,92,3],[56,72,-2]].forEach(([x,y,r],i)=>{const R0=rnd(x*y);
+    s+=`<g transform="rotate(${r} ${x+50} ${y})"><rect x="${x}" y="${y}" width="100" height="18" rx="5" fill="#b9813f"/>`;
+    for(let j=0;j<26;j++)s+=`<ellipse cx="${f1(x+4+R0()*92)}" cy="${f1(y+3+R0()*12)}" rx="${f1(1.4+R0()*1.6)}" ry="1.2" fill="${["#e2b46d","#8a5527","#f3d6a0","#5a3a1e"][j%4]}"/>`;
+    s+=`<rect x="${x}" y="${y}" width="100" height="18" rx="5" fill="url(#${u}cyl)" opacity=".5"/>${i===2?`<path d="M${x+6} ${y+4}c10 5 20-3 30 2s22-4 34 1 18-3 24 0" stroke="#3b2219" stroke-width="2.4" fill="none"/>`:""}</g>`});
+  return s;
+}
+function setSVG(a,u){
+  let s=`<path d="M22 70l30-16h96l30 16z" fill="#c8a5ec"/><rect x="22" y="70" width="156" height="66" rx="8" fill="#a77bdb"/><rect x="30" y="74" width="140" height="56" rx="5" fill="#fffaff"/>
+   <path d="M22 70h156" stroke="#8b55c8" stroke-width="2"/><text x="100" y="65" text-anchor="middle" font-family="Unbounded,Montserrat,sans-serif" font-weight="700" font-size="8" fill="#ffffff" letter-spacing="1">TIKA CAKE</text>`;
+  const minis=a.savory?[["#d08a35","b"],["#e0a858","r"],["#c9852f","b"],["#e0a858","r"]]:[["#fbeef2","berry"],["#dbe6bd","rose"],["#5a3626","choc"],["#e6d8f6","blue"]];
+  [[50,96],[83,96],[117,96],[150,96],[50,118],[83,118],[117,118],[150,118]].forEach(([x,y],i)=>{const m=minis[(i+(i>3?2:0))%4];
+    if(a.savory){s+=m[1]==="b"?`<rect x="${x-13}" y="${y-9}" width="26" height="18" rx="8" fill="${m[0]}"/><rect x="${x-13}" y="${y-9}" width="26" height="18" rx="8" fill="url(#${u}ball)"/>`
+      :`<circle cx="${x}" cy="${y}" r="10" fill="${m[0]}"/><path d="M${x-6} ${y}a6 6 0 1 1 6 6" stroke="#b4702a" stroke-width="1.6" fill="none"/>`}
+    else{s+=`<rect x="${x-12}" y="${y-6}" width="24" height="14" rx="3" fill="${m[0]}"/><rect x="${x-12}" y="${y-6}" width="24" height="14" rx="3" fill="url(#${u}cyl)"/><ellipse cx="${x}" cy="${y-6}" rx="12" ry="3" fill="${shade(m[0],.25)}"/>`;
+      s+=`<g transform="translate(${x} ${y-7}) scale(.6) translate(${-x} ${-(y-7)})">${DEC[m[1]](x,y-7,u,"#fffaf2")}</g>`}});
+  return s;
+}
+function art(p,cls="",big=false){
+  const a=p.a,u="g"+(++GID);let inner;
+  switch(a.shape){
+    case "cake":inner=big?plate(u,96,146,92,15)+cakeSVG(a,u,{cx:80,rx:56,ry:13,top:64,bot:128})+sliceSVG(a,u,124,104,52,40):plate(u)+cakeSVG(a,u);break;
+    case "slab":inner=plate(u)+slabSVG(a,u);break;
+    case "pie":inner=plate(u,100,128,92,20)+pieSVG(a,u);break;
+    case "set":inner=`<ellipse cx="100" cy="142" rx="92" ry="10" fill="url(#${u}sh)"/>`+setSVG(a,u);break;
+    case "baursak":case "buns":inner=plate(u,100,130,90,22)+bunsSVG(a,u,a.shape);break;
+    case "borek":inner=plate(u,100,130,90,22)+borekSVG(a,u);break;
+    case "dump":inner=plate(u,100,128,92,22)+dumpSVG(a,u);break;
+    case "waffle":inner=plate(u,100,140,90,14)+waffleSVG(a,u);break;
+    default:inner=plate(u,100,140,90,14)+barSVG(a,u);
+  }
+  return `<svg class="${cls}" viewBox="0 0 200 170" aria-hidden="true">${defs(u)}${inner}</svg>`;
+}
+
+// ===== Иконки =====
+const I={
+ home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1Z"/></svg>',
+ cat:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="2.2"/><rect x="14" y="3" width="7" height="7" rx="2.2"/><rect x="3" y="14" width="7" height="7" rx="2.2"/><rect x="14" y="14" width="7" height="7" rx="2.2"/></svg>',
+ cart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7h14l-1.2 11.1a2 2 0 0 1-2 1.9H8.2a2 2 0 0 1-2-1.9Z"/><path d="M9 7V6a3 3 0 0 1 6 0v1"/></svg>',
+ gift:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="5" rx="1"/><path d="M5 13v7h14v-7M12 8v12M12 8c-2-4-6-4-6-1.5S9 8 12 8Zm0 0c2-4 6-4 6-1.5S15 8 12 8Z"/></svg>',
+ pin:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>',
+ back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5 8 12l7 7"/></svg>',
+ x:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+ plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+ search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>',
+ info:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>',
+ check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>',
+ arrow:'<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
+};
+
+// ===== Корзина =====
+function cartCount(){return S.cart.reduce((s,l)=>s+l.q,0)}
+function addToCart(id,vi,q=1){
+  const ex=S.cart.find(l=>l.id===id&&l.vi===vi);
+  if(ex)ex.q+=q;else S.cart.push({id,vi,q});
+  save();toast("Добавлено в корзину");renderNav();
+}
+function setQty(i,d){S.cart[i].q+=d;if(S.cart[i].q<=0)S.cart.splice(i,1);save();renderNav();renderView()}
+function totals(){
+  let sub=0,cakes=0;
+  S.cart.forEach(l=>{const p=byId(l.id),x=p.v[l.vi][1]*l.q;sub+=x;if(p.c==="cakes")cakes+=x});
+  const lv=level(USER.spent);let disc,label;
+  // Скидка имениннику −10 % на торты, на остальное — накопительная; не суммируются
+  if(S.co.bday&&cakes){disc=Math.round(cakes*.10+(sub-cakes)*lv.p/100);label="Имениннику −10 % на торты"}
+  else{disc=Math.round(sub*lv.p/100);label=`Накопительная скидка ${lv.p} %`}
+  const delivery=S.co.mode==="delivery"?(sub>=15000?0:1500):0;
+  return{sub,disc,label,delivery,total:sub-disc+delivery,cakes};
+}
+
+// ===== Отрисовка =====
+function render(){renderTop();renderNav();renderView();window.scrollTo(0,0)}
+function renderTop(){
+  const t=$("#top"),sc=S.screen;
+  if(sc){t.innerHTML=`<button class="iconbtn" data-act="back" aria-label="Назад">${I.back}</button><h1>${sc==="done"?"Заказ принят":"Оформление"}</h1>`;return}
+  const titles={catalog:"Каталог",cart:"Корзина",bonus:"Бонусы",contacts:"Кондитерские"};
+  t.innerHTML=S.tab==="home"?`<div class="brand"><b>TIKA CAKE</b><span>кондитерская · Астана</span></div><span class="spacer"></span><span class="proto">Прототип</span>`
+    :`<h1>${titles[S.tab]}</h1><span class="proto">Прототип</span>`;
+}
+function renderNav(){
+  const n=cartCount();
+  const items=[["home","Главная",I.home],["catalog","Каталог",I.cat],["cart","Корзина",I.cart],["bonus","Бонусы",I.gift],["contacts","Адреса",I.pin]];
+  $("#nav").innerHTML=items.map(([id,l,ic])=>`<button data-tab="${id}" ${S.tab===id&&!S.screen?'aria-current="page"':""}>${ic}${id==="cart"&&n?`<span class="badge">${n}</span>`:""}${l}</button>`).join("");
+}
+function card(p){
+  const inCart=S.cart.filter(l=>l.id===p.id).reduce((s,l)=>s+l.q,0);
+  return `<div class="card" role="button" tabindex="0" data-open="${p.id}" aria-label="${p.n}">
+    <div class="pic t-${p.t}">${p.tag?`<span class="tag">${p.tag}</span>`:""}${art(p)}</div>
+    <div class="nm">${p.n}</div><div class="wt">${p.v.map(x=>x[0]).join(" · ")}</div>
+    <div class="row"><span class="price">${p.v.length>1?'<span class="from">от </span>':""}${fmt(p.v[0][1])}</span>
+    <button class="add ${inCart?"in":""}" data-quick="${p.id}" aria-label="Добавить ${p.n}">${inCart?"× "+inCart:I.plus}</button></div></div>`;
+}
+function renderView(){
+  const v=$("#view");
+  if(S.screen==="checkout")return v.innerHTML=viewCheckout();
+  if(S.screen==="done")return v.innerHTML=viewDone();
+  v.innerHTML=({home:viewHome,catalog:viewCatalog,cart:viewCart,bonus:viewBonus,contacts:viewContacts})[S.tab]();
+}
+function viewHome(){
+  const star=byId(15),hits=P.filter(p=>p.hit&&p.id!==15);
+  return `
+  <label class="search">${I.search}<input id="q-home" placeholder="Торт, пирог, баурсаки…" data-search></label>
+  <button class="hero t-${star.t}" data-open="15">
+    <div><div class="eyebrow">Торт недели</div><h2>${star.n}</h2><p>${star.d}</p>
+      <span class="cta">от ${fmt(star.v[0][1])} ${I.arrow}</span></div>
+    ${art(star,"art",true)}
+  </button>
+  <div class="promos">
+    <button class="promo" data-go-cat="cakes"><b>−10 %</b><span>на торты в день рождения, 3 дня до и после</span></button>
+    <button class="promo" data-tab="bonus"><b>до 7 %</b><span>накопительная скидка: 3 → 5 → 7 %</span></button>
+  </div>
+  <section class="sec"><div class="sec-h"><h2>Что хочется?</h2></div>
+    <div class="cats">${CATS.map(c=>{const p=byId(CAT_ART[c.id]);return `<button class="cat" data-go-cat="${c.id}"><i class="t-${p.t}">${art(p)}</i>${c.n}</button>`}).join("")}</div></section>
+  <section class="sec"><div class="sec-h"><h2>Любимое у гостей</h2><button data-go-cat="cakes">Все торты</button></div>
+    <div class="grid">${hits.slice(0,6).map(card).join("")}</div></section>
+  <div class="perks"><div class="perk"><b>2 часа</b>и торт готов к самовывозу</div><div class="perk"><b>8 точек</b>по всей Астане</div><div class="perk"><b>Kaspi</b>оплата в приложении</div></div>
+  <p class="foot">Кликабельный прототип. Оплата и отправка заказа имитируются.<br>Разработка — SmartSol</p>`;
+}
+function viewCatalog(){
+  const q=S.q.trim().toLowerCase();
+  const list=q?P.filter(p=>(p.n+" "+p.d).toLowerCase().includes(q)):P.filter(p=>p.c===S.cat);
+  return `
+  <label class="search">${I.search}<input id="q-cat" placeholder="Поиск по каталогу" value="${esc(S.q)}" data-search></label>
+  ${q?`<div class="found">Найдено: ${list.length}${list.length?"":". Попробуйте «медовый» или «баурсаки»"}</div>`
+     :`<div class="chips">${CATS.map(c=>`<button class="chip" data-cat="${c.id}" aria-pressed="${S.cat===c.id}">${c.n}<small>${P.filter(p=>p.c===c.id).length}</small></button>`).join("")}</div>`}
+  <div class="grid">${list.map(card).join("")}</div>`;
+}
+function viewCart(){
+  if(!S.cart.length)return `<div class="empty"><div class="pic t-lilac">${art(byId(6))}</div><h2>Корзина пока пуста</h2><p>Загляните в каталог: торты, пироги и выпечка.</p><button class="btn" style="flex:none;width:100%" data-tab="catalog">Перейти в каталог</button></div>`;
+  const t=totals();
+  return `<div class="lines">${S.cart.map((l,i)=>{const p=byId(l.id),vv=p.v[l.vi];return `
+    <div class="line"><div class="th t-${p.t}">${art(p)}</div>
+      <div><div class="nm">${p.n}</div><div class="var">${vv[0]} · ${fmt(vv[1])}</div>
+      <div class="qty"><button data-q="${i}" data-d="-1" aria-label="Меньше">−</button><span>${l.q}</span><button data-q="${i}" data-d="1" aria-label="Больше">+</button></div></div>
+      <b class="price">${fmt(vv[1]*l.q)}</b></div>`}).join("")}</div>
+  ${t.cakes?`<label class="check"><input type="checkbox" id="bday-cart" ${S.co.bday?"checked":""} data-bday><span>У меня день рождения: −10 % на торты. Покажите удостоверение при получении.</span></label>`:""}
+  <div class="sum"><div><span>Товары</span><span>${fmt(t.sub)}</span></div>
+    <div class="disc"><span>${t.label}</span><span>−${fmt(t.disc)}</span></div>
+    <div class="tot"><span>Итого</span><span>${fmt(t.sub-t.disc)}</span></div></div>
+  <button class="btn" data-checkout>Оформить заказ</button>`;
+}
+function days(){const r=[],w=["вс","пн","вт","ср","чт","пт","сб"],d=new Date();
+  for(let i=0;i<5;i++){const x=new Date(d);x.setDate(d.getDate()+i);r.push([i===0?"Сегодня":i===1?"Завтра":w[x.getDay()],x.getDate()+"."+String(x.getMonth()+1).padStart(2,"0")])}return r}
+const SLOTS=["09:00–11:00","11:00–13:00","13:00–15:00","15:00–17:00","17:00–19:00","19:00–21:00"];
+function viewCheckout(){
+  const c=S.co,t=totals();
+  return `
+  <div class="stepper"><i class="on"></i><i class="on"></i><i></i></div>
+  <div class="seg"><button data-mode="pickup" aria-pressed="${c.mode==="pickup"}">Самовывоз</button><button data-mode="delivery" aria-pressed="${c.mode==="delivery"}">Доставка</button></div>
+  ${c.mode==="pickup"?`
+   <section class="sec"><div class="label">Кондитерская</div>
+   <div class="radio-list">${BRANCHES.map((b,i)=>`<button class="radio" data-branch="${i}" aria-pressed="${c.branch===i}"><span class="dot"></span><span class="t"><b>${b[0]}</b><span>${b[1]||"Астана"}</span></span></button>`).join("")}</div></section>`
+  :`<div class="field" id="f-addr"><label for="addr">Адрес доставки</label><input id="addr" placeholder="Улица, дом, квартира" value="${esc(c.addr)}" data-f="addr"><span class="hint">По Астане 1 500 ₸, от 15 000 ₸ бесплатно (условия для примера)</span></div>`}
+  <section class="sec"><div class="label">Когда</div>
+    <div class="slots">${days().map((d,i)=>`<button class="slot" data-day="${i}" aria-pressed="${c.day===i}">${d[0]}<span>${d[1]}</span></button>`).join("")}</div>
+    <div class="slots">${SLOTS.map((s,i)=>`<button class="slot" data-slot="${i}" aria-pressed="${c.slot===i}">${s}</button>`).join("")}</div></section>
+  <div class="field" id="f-name"><label for="name">Имя</label><input id="name" autocomplete="given-name" value="${esc(c.name)}" placeholder="Как к вам обращаться" data-f="name"></div>
+  <div class="field" id="f-phone"><label for="phone">Телефон</label><input id="phone" inputmode="tel" autocomplete="tel" value="${esc(c.phone)}" placeholder="+7 (7__) ___ __ __" data-f="phone"></div>
+  ${t.cakes?`<div class="field"><label for="inscr">Надпись на торте</label><input id="inscr" maxlength="40" value="${esc(c.inscr)}" placeholder="С днём рождения, Арман!" data-f="inscr"><span class="hint">До 40 символов, бесплатно</span></div>`:""}
+  <div class="field"><label for="comment">Комментарий</label><textarea id="comment" data-f="comment" placeholder="Пожелания к заказу">${esc(c.comment)}</textarea></div>
+  <section class="sec"><div class="label">Оплата</div>
+   <div class="radio-list">${[["kaspi","Kaspi QR / Kaspi Pay","Оплата в приложении Kaspi"],["card","Картой онлайн","Visa, Mastercard"],["cash","При получении","Наличными или картой"]]
+    .map(([k,a,b])=>`<button class="radio" data-pay="${k}" aria-pressed="${c.pay===k}"><span class="dot"></span><span class="t"><b>${a}</b><span>${b}</span></span></button>`).join("")}</div></section>
+  <div class="sum"><div><span>Товары</span><span>${fmt(t.sub)}</span></div>
+    <div class="disc"><span>${t.label}</span><span>−${fmt(t.disc)}</span></div>
+    ${c.mode==="delivery"?`<div><span>Доставка</span><span>${t.delivery?fmt(t.delivery):"бесплатно"}</span></div>`:""}
+    <div class="tot"><span>К оплате</span><span>${fmt(t.total)}</span></div></div>
+  <button class="btn" data-place>Подтвердить · ${fmt(t.total)}</button>
+  <p class="foot">Нажимая кнопку, вы соглашаетесь на обработку персональных данных.</p>`;
+}
+function viewDone(){
+  const o=S.orders[0];if(!o)return "";
+  const payTxt={kaspi:"Счёт отправлен в Kaspi, оплатите в течение 15 минут.",card:"Оплата картой прошла (демо).",cash:"Оплата при получении."}[o.pay];
+  return `<div class="done"><div class="ok">${I.check}</div><h2>Заказ № ${o.no} принят</h2>
+   <p>${esc(o.where)}, ${o.when}. ${payTxt} Менеджер подтвердит заказ в WhatsApp.</p></div>
+   <div class="sum">${o.items.map(i=>`<div><span>${esc(i)}</span></div>`).join("")}<div class="tot"><span>Итого</span><span>${fmt(o.total)}</span></div></div>
+   <a class="btn wa-btn" target="_blank" rel="noopener" href="https://wa.me/77750781778?text=${encodeURIComponent("Здравствуйте! Мой заказ № "+o.no)}">Написать по заказу в WhatsApp</a>
+   <button class="btn ghost" data-tab="home">На главную</button>`;
+}
+function viewBonus(){
+  const lv=level(USER.spent),next=LEVELS.find(l=>l.from>USER.spent);
+  const pct=next?Math.round(USER.spent/next.from*100):100;
+  const hist=[...S.orders.map(o=>[o.date,`Заказ № ${o.no}`,o.total]),["12.09","Торт «Сникерс», 1,5 кг",12000],["28.08","Наполеон, баурсаки",9300],["03.08","Фисташка-малина, 1,5 кг",14000],["15.07","Банофи-пай, вафли",6700]];
+  return `
+  <div class="loyal"><div class="lv"><div><small>${USER.name}, ваша скидка</small><div class="pct">${lv.p} %</div></div><small>Карта № 0417 2290</small></div>
+   <div class="bar"><i style="width:${pct}%"></i></div>
+   <small>${next?`Покупок на ${fmt(USER.spent)} · ещё ${fmt(next.from-USER.spent)} до скидки ${next.p} %`:"Максимальный уровень"}</small></div>
+  <div class="levels">${LEVELS.map(l=>`<div class="level ${l.p===lv.p?"cur":""}"><b>${l.p} %</b>${l.from?"от "+fmt(l.from):"с первой покупки"}</div>`).join("")}</div>
+  <div class="note">${I.info}<span>В день рождения −10 % на торты: 3 дня до и после, при предъявлении удостоверения.</span></div>
+  <section class="sec"><div class="sec-h"><h2>История покупок</h2></div>
+   <div class="hist">${hist.map(h=>`<div>${esc(h[1])}<b>${fmt(h[2])}</b><span>${h[0]}</span></div>`).join("")}</div></section>
+  <p class="foot">Данные клиента демонстрационные.</p>`;
+}
+function viewContacts(){
+  return `
+  <div class="contact">
+   <a class="wa-c" href="https://wa.me/77750781778" target="_blank" rel="noopener"><span>WhatsApp</span><b>Написать нам</b></a>
+   <button data-copy="${PHONE}"><span>Телефон · скопировать</span><b>${PHONE}</b></button>
+   <a href="https://instagram.com/tika.cake" target="_blank" rel="noopener"><span>Instagram</span><b>@tika.cake</b></a>
+   <a href="https://tikacake.kz" target="_blank" rel="noopener"><span>Сайт</span><b>tikacake.kz</b></a>
+  </div>
+  <section class="sec"><div class="sec-h"><h2>8 кондитерских</h2></div>
+  <div class="branches">${BRANCHES.map((b,i)=>`<div class="branch"><span class="ic">${I.pin}</span><div class="a">${b[0]}</div><div class="d">Астана${b[1]?" · "+b[1]:""}</div>
+   <div class="acts"><a class="pill" target="_blank" rel="noopener" href="https://2gis.kz/astana/search/${encodeURIComponent("Tika Cake "+b[0])}">Маршрут в 2ГИС</a>
+   <button class="pill acc" data-pickup="${i}">Заберу здесь</button></div></div>`).join("")}</div></section>`;
+}
+
+// ===== Карточка товара =====
+let sheet=null;
+function openProduct(id){sheet={id,vi:0,q:1};drawSheet()}
+function drawSheet(){
+  const L=$("#layer");if(!sheet){L.innerHTML="";document.body.style.overflow="";return}
+  const p=byId(sheet.id),vv=p.v[sheet.vi];
+  document.body.style.overflow="hidden";
+  L.innerHTML=`<div class="sheet-bg" data-close><div class="sheet" role="dialog" aria-modal="true" aria-label="${p.n}">
+   <div class="ph t-${p.t}"><span class="grab"></span>${art(p,"",p.a.shape==="cake")}<button class="iconbtn close" data-close aria-label="Закрыть">${I.x}</button></div>
+   <div class="in">${p.tag?`<div class="eyebrow">${p.tag}</div>`:""}<h2>${p.n}</h2><p>${p.d}</p>
+    ${p.v.length>1?`<div class="label">Вес / вариант</div><div class="opts">${p.v.map((x,i)=>`<button class="opt" data-vi="${i}" aria-pressed="${sheet.vi===i}"><span>${x[0]}</span><b>${fmt(x[1])}</b></button>`).join("")}</div>`:""}
+    <div class="facts"><div class="fact">${p.v.length>1?"Выбрано":"Вариант"}<b>${vv[0]}</b></div><div class="fact">Готовность<b>${p.c==="cakes"?"через 2 ч":"сегодня"}</b></div><div class="fact">Хранение<b>${p.c==="semi"?"−18 °C":"+2…+6 °C"}</b></div></div>
+    ${p.c==="cakes"?`<div class="note">${I.info}<span>Надпись на торте бесплатно, добавите при оформлении.</span></div>`:""}
+    <div class="buybar"><div class="qty"><button data-sq="-1" aria-label="Меньше">−</button><span>${sheet.q}</span><button data-sq="1" aria-label="Больше">+</button></div>
+     <button class="btn" data-addsheet>В корзину · ${fmt(vv[1]*sheet.q)}</button></div>
+   </div></div></div>`;
+}
+
+let tt;function toast(m){clearTimeout(tt);let e=$(".toast");if(!e){e=document.createElement("div");e.className="toast";e.setAttribute("role","status");document.body.appendChild(e)}e.textContent=m;e.hidden=false;tt=setTimeout(()=>e.hidden=true,1600)}
+
+// ===== Оформление =====
+function placeOrder(){
+  const c=S.co;let bad=null;
+  const mark=(id,ok,msg)=>{const f=$("#"+id);if(!f)return;f.classList.toggle("err",!ok);f.querySelector(".msg")?.remove();if(!ok){f.insertAdjacentHTML("beforeend",`<span class="msg">${msg}</span>`);bad=bad||f}};
+  mark("f-name",c.name.trim().length>1,"Укажите имя");
+  mark("f-phone",c.phone.replace(/\D/g,"").length>=11,"Введите номер в формате +7 7XX XXX XX XX");
+  if(c.mode==="delivery")mark("f-addr",c.addr.trim().length>4,"Укажите улицу и дом");
+  if(bad){bad.scrollIntoView({behavior:"smooth",block:"center"});return}
+  const t=totals(),d=days()[c.day];
+  S.orders.unshift({no:String(Math.floor(10000+Math.random()*89999)),date:d[1],total:t.total,pay:c.pay,
+    where:c.mode==="pickup"?"Самовывоз: "+BRANCHES[c.branch][0]:"Доставка: "+c.addr,
+    when:`${d[0].toLowerCase()} ${d[1]}, ${SLOTS[c.slot]}`,
+    items:S.cart.map(l=>{const p=byId(l.id);return `${p.n} (${p.v[l.vi][0]}) × ${l.q}`})});
+  S.cart=[];save();S.screen="done";render();
+}
+
+// ===== События =====
+document.addEventListener("click",e=>{
+  const el=e.target.closest("button,[data-open],[data-close]");if(!el)return;
+  const ds=el.dataset;
+  if(ds.close!==undefined&&(e.target===el||el.classList.contains("close"))){sheet=null;return drawSheet()}
+  if(ds.quick){e.stopPropagation();const p=byId(+ds.quick);if(p.v.length>1)return openProduct(p.id);addToCart(p.id,0);return renderView()}
+  if(ds.open)return openProduct(+ds.open);
+  if(ds.vi){sheet.vi=+ds.vi;return drawSheet()}
+  if(ds.sq){sheet.q=Math.max(1,sheet.q+ +ds.sq);return drawSheet()}
+  if(ds.addsheet!==undefined){addToCart(sheet.id,sheet.vi,sheet.q);sheet=null;drawSheet();return renderView()}
+  if(ds.tab){sheet=null;drawSheet();S.tab=ds.tab;S.screen=null;S.q="";return render()}
+  if(ds.goCat){S.tab="catalog";S.cat=ds.goCat;S.q="";S.screen=null;return render()}
+  if(ds.cat){S.cat=ds.cat;return renderView()}
+  if(ds.q!==undefined&&ds.d)return setQty(+ds.q,+ds.d);
+  if(ds.checkout!==undefined){S.screen="checkout";return render()}
+  if(ds.act==="back"){S.tab=S.screen==="done"?"home":"cart";S.screen=null;return render()}
+  if(ds.mode){S.co.mode=ds.mode;return renderView()}
+  if(ds.branch){S.co.branch=+ds.branch;return renderView()}
+  if(ds.day){S.co.day=+ds.day;return renderView()}
+  if(ds.slot){S.co.slot=+ds.slot;return renderView()}
+  if(ds.pay){S.co.pay=ds.pay;return renderView()}
+  if(ds.place!==undefined)return placeOrder();
+  if(ds.pickup){S.co.mode="pickup";S.co.branch=+ds.pickup;toast("Кондитерская выбрана");if(S.cart.length)S.screen="checkout";else S.tab="catalog";return render()}
+  if(ds.copy){const v=ds.copy;try{navigator.clipboard.writeText(v).then(()=>toast("Номер скопирован"),()=>toast(v))}catch(err){toast(v)}}
+});
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"&&sheet){sheet=null;drawSheet()}
+  if((e.key==="Enter"||e.key===" ")&&e.target.matches?.("div[data-open]")){e.preventDefault();openProduct(+e.target.dataset.open)}
+});
+document.addEventListener("input",e=>{
+  const t=e.target;
+  if(t.dataset.f!==undefined){S.co[t.dataset.f]=t.value;t.closest(".field")?.classList.remove("err");t.closest(".field")?.querySelector(".msg")?.remove()}
+  if(t.dataset.search!==undefined){
+    S.q=t.value;
+    if(S.tab!=="catalog"){S.tab="catalog";render()}else renderView();
+    const i=$("#q-cat");if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length)}
+  }
+});
+document.addEventListener("change",e=>{if(e.target.dataset.bday!==undefined){S.co.bday=e.target.checked;renderView()}});
+render();
+</script>
+</body>
+</html>
