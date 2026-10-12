@@ -40,7 +40,6 @@ a{color:var(--accent)}
 .t-mint{background:var(--t-mint)}.t-cream{background:var(--t-cream)}.t-choc{background:var(--t-choc)}
 @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.25)}100%{transform:scale(1)}}
-@keyframes shimmer{from{background-position:-200px 0}to{background-position:200px 0}}
 #view > *{animation:rise .35s ease-out both}
 #view > *:nth-child(2){animation-delay:.03s}#view > *:nth-child(3){animation-delay:.06s}#view > *:nth-child(4){animation-delay:.09s}
 @media (prefers-reduced-motion:reduce){#view > *{animation:none}}
@@ -128,7 +127,11 @@ main{flex:1;padding:4px 16px 150px;display:flex;flex-direction:column;gap:26px}
 .card{display:flex;flex-direction:column;gap:7px;text-align:left;cursor:pointer;min-width:0}
 .pic{aspect-ratio:1/1;border-radius:24px;display:grid;place-items:center;position:relative;max-width:100%;overflow:hidden;box-shadow:var(--shadow-s)}
 .pic svg{width:96%;height:auto}
-.photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;max-width:none;transition:transform .5s ease}
+.photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;max-width:none;opacity:0;transition:opacity .35s ease,transform .5s ease}
+.photo.ok{opacity:1}
+.skel{position:absolute;inset:0;background:linear-gradient(100deg,rgba(255,255,255,0) 30%,rgba(255,255,255,.65) 50%,rgba(255,255,255,0) 70%) 0 0/200% 100% no-repeat;animation:shimmer 1.3s linear infinite}
+@keyframes shimmer{from{background-position:150% 0}to{background-position:-50% 0}}
+@media (prefers-reduced-motion:reduce){.skel{animation:none}.photo{transition:none}}
 .card:hover .photo{transform:scale(1.04)}
 .tag{position:absolute;top:10px;left:10px;z-index:1;font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 9px;border-radius:99px;background:var(--grad);color:#fff;box-shadow:0 4px 12px -4px rgba(200,90,160,.6)}
 .fav{position:absolute;top:8px;right:8px;z-index:1;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.88);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:grid;place-items:center;color:var(--muted);box-shadow:var(--shadow-s)}
@@ -682,9 +685,22 @@ function art(p,cls="",big=false){
 }
 
 // ===== Фото: иллюстрация снизу, фото сайта поверх; если фото не загрузится — видна иллюстрация =====
+// Фото: пока грузится — пастельная подложка с переливом; рисунок только если фото не загрузилось
+const LOADED=new Set();
+function img(url,p,big,lazy){
+  const ok=LOADED.has(url);
+  return `<img class="photo${ok?" ok":""}" src="${esc(url)}" alt="${esc(p.n)}"${lazy&&!ok?' loading="lazy"':""} referrerpolicy="no-referrer" onload="imgOk(this)" onerror="imgFail(this,${p.id},${big?1:0})">`;
+}
 function vis(p,cls="",big=false){
   const f=p.photo;
-  return art(p,cls,big)+(f?`<img class="photo" src="${esc(big?f[1]:f[0])}" alt="${esc(p.n)}" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">`:"");
+  if(!f)return art(p,cls,big);
+  // в большой карточке сразу показываем уже загруженную миниатюру, поверх догружается полное фото
+  return `<span class="skel"></span>`+(big?img(f[0],p,big,false)+img(f[1],p,big,false):img(f[0],p,big,true));
+}
+function imgOk(el){LOADED.add(el.getAttribute("src"));el.classList.add("ok")}
+function imgFail(el,id,big){
+  const box=el.parentNode;el.remove();
+  if(box&&!box.querySelector("img.photo")&&!box.querySelector("svg.fb")){const p=byId(id);box.insertAdjacentHTML("beforeend",art(p,"fb",!!big));box.querySelector(".skel")?.remove()}
 }
 
 // ===== Иконки =====
